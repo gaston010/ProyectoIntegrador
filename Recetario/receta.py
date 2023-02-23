@@ -58,8 +58,12 @@ class Receta(Ingredientes):
             return "No se puede iniciar una receta sin preparacion"
         else:
             return "Receta iniciada"
-    
 
 
-
-
+def agregar_receta(receta_nombre):
+    rec = ""
+    ing = agregar_ingrediente()
+    while rec != "fin".lower():
+        print("Ingresa los datos de la receta")
+        receta_nombre = input("Ingresa el nombre de la receta: ")
+        print(f"R")

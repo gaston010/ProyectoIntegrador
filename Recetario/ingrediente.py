@@ -42,7 +42,7 @@ class Ingredientes:
         self._unidad_de_medida = unidad_de_medida
 
     def __str__(self):
-        return f" Ingredientes {self._id_ingrediente} :\n Nombre: {self._nombre} Son{self._cantidad}:{self._unidad_de_medida} "
+        return f" Ingredientes {self._id_ingrediente} :\n Nombre: {self._nombre} Son {self._cantidad}:{self._unidad_de_medida} "
 
 
 def agregar_ingrediente():
