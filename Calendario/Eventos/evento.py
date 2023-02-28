@@ -3,6 +3,7 @@ class Evento:
     """
     Clase que representa un evento en un calendario con fechas y nombres
     """
+    id: int
     id= 0
 
     def __init__(self, nombre, fecha, hora):
@@ -15,19 +16,22 @@ class Evento:
         self.nombre = nombre
         self.fecha = fecha
         self.hora = hora
-        self.id = self.asignar_id()
+        self.__dict__ = {}
+        self.id= self.ente()
 
+    
     @classmethod
-    def asignar_id(cls):
+    def ente(cls):
         """
-         carga los valores de evento dentro de la clase
+        Genera un id para cada evento, solo genera un id si el evento es nuevo fecha y hora
 
         Returns:
-            int: valores del evonto_id
-        """
+            int: devuelve el valor en entero del id + 1
+        """        
         cls.id += 1
-        print(cls.id)
         return cls.id
+
+    
 
     @property
     def nombre(self):
@@ -109,25 +113,32 @@ class Evento:
 
     def __str__(self):
         return f"EventoID:{self.id} {self.nombre} - {self.fecha} - {self.hora}"
+       
+    def dict(self):
+        return self.__dict__
 
 
+
+import json
+with open("eventos.json", "r") as archivo:
+    fecha = json.load(archivo)
+    print(fecha)
+
+    
+
+    
 def nuevo_evento(nombre,fecha,hora):
-    """
-    Crea un nuevo evento
-
-    Args:
-        nombre (_type_): _description_
-        fecha (_type_): _description_
-    """
     import json
     evento = Evento(nombre, fecha, hora)
-    if hora < 24:
+    evento.comprobar_fecha(fecha)
+    if hora <= 24:
         with open("eventos.json", "a+") as archivo:
             archivo.write(json.dumps(evento.__dict__))
-            archivo.write(" ")
             
     else:
         print(f"Evento {evento.nombre} creado con exito")
         return evento
         
-nuevo_evento("PARTELOS", "2021-10-10", 23)
+# nuevo_evento("Cumpleaños", "12/12/2020", 12)
+# nuevo_evento("CUmpe", "12/12/2021", 8)
+
