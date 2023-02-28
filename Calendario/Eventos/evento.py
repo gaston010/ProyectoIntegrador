@@ -16,7 +16,6 @@ class Evento:
         self.nombre = nombre
         self.fecha = fecha
         self.hora = hora
-        self.__dict__ = {}
         self.id= self.ente()
 
     
@@ -113,9 +112,6 @@ class Evento:
 
     def __str__(self):
         return f"EventoID:{self.id} {self.nombre} - {self.fecha} - {self.hora}"
-       
-    def dict(self):
-        return self.__dict__
 
 
 
