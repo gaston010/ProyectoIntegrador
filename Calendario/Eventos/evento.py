@@ -111,30 +111,16 @@ class Evento:
                 print("La fecha ya existe, por favor elija otra fecha")
 
     def __str__(self):
-        return f"EventoID:{self.id} {self.nombre} - {self.fecha} - {self.hora}"
+        return f"EventoID:{self.id}{self.nombre} - {self.fecha} - {self.hora}"
 
 
 
-import json
-with open("eventos.json", "r") as archivo:
-    fecha = json.load(archivo)
-    print(fecha)
-
-    
-
-    
-def nuevo_evento(nombre,fecha,hora):
-    import json
+def cargar_csv(nombre, fecha, hora):
     evento = Evento(nombre, fecha, hora)
-    evento.comprobar_fecha(fecha)
-    if hora <= 24:
-        with open("eventos.json", "a+") as archivo:
-            archivo.write(json.dumps(evento.__dict__))
-            
-    else:
-        print(f"Evento {evento.nombre} creado con exito")
-        return evento
-        
-# nuevo_evento("Cumpleaños", "12/12/2020", 12)
-# nuevo_evento("CUmpe", "12/12/2021", 8)
+    import csv
+    with open('eventos.csv', 'w+') as file:
+        writer = csv.writer(file)
+        writer.writerow(["ID", "Nombre", "Fecha", "Hora"])
+        writer.writerow([evento.id, evento.nombre, evento.fecha, evento.hora])
 
+cargar_csv("Cumpleaños", "12/12/2020", "12:00")
