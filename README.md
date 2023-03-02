@@ -1,10 +1,8 @@
 # Proyecto Integrado Introducion a Programacion
 
 
-Calendario de eventos
-Para este proyecto se deberá diseñar una aplicación de escritorio en la que puedan crear,
-editar y eliminar eventos en un calendario.
-Un evento debe estar compuesto de los siguientes datos:
+## Calendario de eventos
+Para este proyecto se deberá diseñar una aplicación de escritorio en la que puedan crear, editar y eliminar eventos en un calendario. Un evento debe estar compuesto de los siguientes datos:
 
     ● Título. ✔️
     ● Fecha y hora.✔️
@@ -14,7 +12,7 @@ Un evento debe estar compuesto de los siguientes datos:
     ● Fecha y hora del recordatorio. ⭐
     ● Etiquetas: palabras claves para identificar un evento y luego buscarlo.⭐
 
- Las funcionalidades que debe tener la aplicación son las siguientes:
+# Las funcionalidades que debe tener la aplicación son las siguientes:
    
     ● Crear un evento. Por defecto se selecciona la fecha y hora actual. ✔️
     ● Modificar un evento. ✔️
@@ -25,7 +23,7 @@ Un evento debe estar compuesto de los siguientes datos:
         ○ Título. ⭐    
         ○ Etiquetas. ⭐
 
-Deberá contar con las siguientes vistas (ventanas):
+# Deberá contar con las siguientes vistas (ventanas):
     
     ● Semanal. Ventana principal por defecto.
         ○ Se muestran los eventos, ordenados cronológicamente, que hay cada día de la semana actual.✔️
