@@ -13,7 +13,9 @@ Un evento debe estar compuesto de los siguientes datos:
     ● Importancia: normal e importante. ✔️
     ● Fecha y hora del recordatorio. ⭐
     ● Etiquetas: palabras claves para identificar un evento y luego buscarlo.⭐
-Las funcionalidades que debe tener la aplicación son las siguientes:
+
+ Las funcionalidades que debe tener la aplicación son las siguientes:
+   
     ● Crear un evento. Por defecto se selecciona la fecha y hora actual. ✔️
     ● Modificar un evento. ✔️
     ● Eliminar un evento. ✔️
@@ -22,7 +24,9 @@ Las funcionalidades que debe tener la aplicación son las siguientes:
     ● Buscar y/o filtrar eventos por:   
         ○ Título. ⭐    
         ○ Etiquetas. ⭐
+
 Deberá contar con las siguientes vistas (ventanas):
+    
     ● Semanal. Ventana principal por defecto.
         ○ Se muestran los eventos, ordenados cronológicamente, que hay cada día de la semana actual.✔️
         ○ Los eventos importantes deberán estar destacados de alguna forma (aplicar la misma funcionalidad a la vista mensual). ✔️
