@@ -124,3 +124,5 @@ def cargar_csv(nombre, fecha, hora):
         writer.writerow([evento.id, evento.nombre, evento.fecha, evento.hora])
 
 cargar_csv("Cumpleaños", "12/12/2020", "12:00")
+
+
