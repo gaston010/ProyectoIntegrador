@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import  messagebox
 from tkcalendar import Calendar
-import calendar
 from evento import Evento
 
 class Calendario(ttk.Frame, Evento):
@@ -20,15 +19,15 @@ class Calendario(ttk.Frame, Evento):
         # self.root.geometry("400x400") -> no funciona 
 
         # agregar un boton para agregar evento
-        boton_agregar = tk.Button(self, text="Agregar evento", command=self.agregar_evento)
+        boton_agregar = tk.Button(self, text="Agregar evento", command=self.boton_evento)
         boton_agregar.pack(padx=10, pady=10)
 
-    def agregar_evento(self):
+    def boton_evento(self, nombre=None, fecha=None, hora=None, duracion=1):
         # obtener la fecha seleccionada en el calendario
         fecha_seleccionada = self.calendario.selection_get()
 
         # # crear un cuadro de diálogo para agregar un evento
-        evento = " "
+        evento = ""
 
         # # mostrar un mensaje de confirmación del evento agregado
         if evento:
