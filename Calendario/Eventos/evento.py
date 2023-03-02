@@ -57,6 +57,13 @@ class Evento:
         self.__hora = hora
 
 
+    def agregar(self, nombre_evento, fecha, hora):
+        import csv
+        with open('eventos.csv', 'a+') as file:
+            writer = csv.writer(file)
+            writer.writerow([self.id, nombre_evento, fecha, hora])
+
+
     def eliminar(self, nombre_evento,):
         """
         Elimina un evento del calendario con el nombre del evento eso eliminara el mismo con la fecha incluida
@@ -115,12 +122,25 @@ class Evento:
 
 
 
+    """
+    cargar_cvs:
+    funciona cargando por medio de los parametros que se establecen,
+    el nombre del evento, la fecha y la hora, luego se crea un archivo csv siempre y cuando el archivo exita de otra forma
+    el mismo se crea y se le agregan los datos que se le pasan por parametro
+
+    # ? ver como agregar una cabezar solo una vez
+    # ! CORREGIR NO AGREGA UNA CABEZAR UNA UNICA VEZ!!!!!!!!!!!!!!!
+    """
+
 def cargar_csv(nombre, fecha, hora):
     evento = Evento(nombre, fecha, hora)
     import csv
-    with open('eventos.csv', 'w+') as file:
+    with open('eventos.csv', 'a+') as file:
         writer = csv.writer(file)
-        writer.writerow(["ID", "Nombre", "Fecha", "Hora"])
         writer.writerow([evento.id, evento.nombre, evento.fecha, evento.hora])
 
 cargar_csv("Cumpleaños", "12/12/2020", "12:00")
+# diez nombre fecha y horas diferentes
+
+cargar_csv("Casmiento", "15/08/1993", "13:00")
+cargar_csv("Prueba", "23/08/2010", "14:00")
