@@ -140,7 +140,3 @@ def cargar_csv(nombre, fecha, hora):
         writer.writerow([evento.id, evento.nombre, evento.fecha, evento.hora])
 
 cargar_csv("Cumpleaños", "12/12/2020", "12:00")
-# diez nombre fecha y horas diferentes
-
-cargar_csv("Casmiento", "15/08/1993", "13:00")
-cargar_csv("Prueba", "23/08/2010", "14:00")
