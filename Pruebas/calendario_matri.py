@@ -33,7 +33,8 @@ class Calendario(tk.Frame):
             for columna in range(7):
                 dia = matriz[fila][columna]
                 if dia != 0:
-                    etiqueta = tk.Label(self, text=dia, width=4, height=2)
+                    # etiqueta = tk.Label(self, text=dia, width=4, height=2)
+                    etiqueta = tk.Button(self, text=dia, width=4, height=2)
                     etiqueta.grid(row=fila+1, column=columna, padx=5, pady=5)
 
 # crear la ventana principal y mostrar el calendario
