@@ -69,4 +69,4 @@ class Evento():
 
 
 
-""" esto es una pruba"""
+""" esto es una prueba"""
