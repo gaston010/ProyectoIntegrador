@@ -12,6 +12,7 @@ class Calendario(tk.Frame):
         self.crear_calendario()
 
     def crear_calendario(self):
+        self.root.geometry("400x300")
         # obtener el número de días en el mes
         año = 2023 # ejemplo
         mes = 3 # ejemplo
@@ -33,9 +34,16 @@ class Calendario(tk.Frame):
             for columna in range(7):
                 dia = matriz[fila][columna]
                 if dia != 0:
-                    # etiqueta = tk.Label(self, text=dia, width=4, height=2)
-                    etiqueta = tk.Button(self, text=dia, width=4, height=2)
+                    etiqueta = tk.Label(self, text=dia, width=4, height=2)
                     etiqueta.grid(row=fila+1, column=columna, padx=5, pady=5)
+                    etiqueta.bind("<Enter>", self.mostrar_dia)
+    
+    def mostrar_dia(self, evento):
+        # obtener el día que se seleccionó
+        di = evento.widget.cget("text")
+        dia = "Día: " + str(di) +" Mes: Marzo Año: 2023"
+        # mostrar el día en la ventana principal
+        self.root.title(dia)
 
 # crear la ventana principal y mostrar el calendario
 ventana = tk.Tk()
