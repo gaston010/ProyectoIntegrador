@@ -125,8 +125,6 @@ def cargar_csv(nombre, fecha, hora):
 
 cargar_csv("Cumpleaños", "12/12/2020", "12:00")
 
-print("Mi primer comit.")
-
 print("Mi segundo comit.")
 print("Mi tercer comit.")
 print("Mi cuarto comit.")
