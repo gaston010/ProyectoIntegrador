@@ -100,7 +100,7 @@ class Calendario(tk.Frame):
         etiqueta.configure(bg="green")
         etiqueta.configure(text="Evento")
     
-
+# instancia  de clase
 p = tk.Tk()
 calendario = Calendario(p)
 calendario.mainloop()
