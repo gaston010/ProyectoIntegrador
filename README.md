@@ -1,5 +1,5 @@
 # Proyecto Integrado Introducion a Programacion
-
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 
 ## Calendario de eventos
 Para este proyecto se deberá diseñar una aplicación de escritorio en la que puedan crear, editar y eliminar eventos en un calendario. Un evento debe estar compuesto de los siguientes datos:
