@@ -115,6 +115,8 @@ class Evento:
 
 
 
+
+
 def cargar_csv(nombre, fecha, hora):
     evento = Evento(nombre, fecha, hora)
     import csv
@@ -122,6 +124,7 @@ def cargar_csv(nombre, fecha, hora):
         writer = csv.writer(file)
         writer.writerow(["ID", "Nombre", "Fecha", "Hora"])
         writer.writerow([evento.id, evento.nombre, evento.fecha, evento.hora])
+
 
 cargar_csv("Cumpleaños", "12/12/2020", "12:00")
 
