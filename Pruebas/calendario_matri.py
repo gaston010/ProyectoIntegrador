@@ -74,7 +74,7 @@ class Calendario(tk.Frame):
 
         Args:
                 evento (_event_widget_): el evento que se ejecuta al hacer click izquierdo sobre la etiqueta(label) DIA
-         """        
+        """        
         etiqueta = evento.widget
         etiqueta.configure(bg="red")
     
@@ -84,7 +84,7 @@ class Calendario(tk.Frame):
 
         Args:
                 evento (_event_widget_): el evento que se ejecuta al hacer click derecho sobre la etiqueta(label) DIA
-         """        
+        """        
         etiqueta = evento.widget
         etiqueta.configure(bg="grey")
 
@@ -95,7 +95,7 @@ class Calendario(tk.Frame):
 
         Args:
                 evento (_type_): _description_
-         """        
+        """        
         etiqueta = evento.widget
         etiqueta.configure(bg="green")
         etiqueta.configure(text="Evento")

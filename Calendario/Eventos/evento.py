@@ -1,5 +1,4 @@
-
-class Evento:
+class Evento():
     """
     Clase que representa un evento en un calendario con fechas y nombres
     """
