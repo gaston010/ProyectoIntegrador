@@ -1,6 +1,6 @@
 import datetime as dt  # dt FECHA Y HORAS
 import tkinter as tk
-from tkinter import StringVar, ttk
+from tkinter import StringVar, ttk, messagebox
 
 class Evento(ttk.Frame):
 
@@ -14,7 +14,6 @@ class Evento(ttk.Frame):
         self.descripcion = StringVar()
         self.duracion = StringVar()
         self.importancia = StringVar()
-
         self.id_evento = self.identificador()
         self.root = root     
         root.geometry("307x381")
@@ -77,7 +76,9 @@ class Evento(ttk.Frame):
         importancia.place(x=0,y=230,width=70,height=25)
 
         importancia=tk.Entry(root, textvariable=self.importancia)
+        importancia.insert(0,"Si")
         importancia.place(x=90,y=230,width=199,height=30)
+        
 
         #Boton Crear
         evento_n=tk.Button(root)
@@ -90,6 +91,25 @@ class Evento(ttk.Frame):
         cancelar["text"] = "Cancelar"
         cancelar.place(x=100,y=300,width=70,height=30)
         cancelar["command"] = self.boton_cancelar
+
+        #Boton Modificar
+        modificar=tk.Button(root)
+        modificar["text"] = "Modificar Evento"
+        modificar.place(x=10,y=350,width=70,height=30)
+        modificar["command"] = self.modificar
+
+        #Boton Eliminar
+        # eliminar=tk.Button(root)
+        # eliminar["text"] = "Eliminar Evento"
+        # eliminar.place(x=100,y=350,width=70,height=30)
+        # eliminar["command"] = self.eliminar
+
+        # #Boton Guardar
+        # guardar=tk.Button(root)
+        # guardar["text"] = "Guardar"
+        # guardar.place(x=10,y=400,width=70,height=30)
+        # guardar["command"] = self.guardar
+
 
     
     def crear_nuevo(self):
@@ -108,17 +128,33 @@ class Evento(ttk.Frame):
         hora_get = self.hora.get()
         descripcion = self.descripcion.get()
         duracion = self.duracion.get()
-        importancia = self.importancia.get()
-        id_v = self.id_evento
+        imp = self.importancia.get()
+        id_v = self.identificador()
 
-        fecha = dt.datetime.strptime(fecha_get, '%d-%m-%Y').date()
+        if imp =='Si':
+            importancia = True
+        else:
+            importancia = False
+
+        fecha = dt.datetime.strptime(fecha_get, '%Y-%m-%d').date()
         hora = dt.datetime.strptime(hora_get, "%H:%M").time()
         
+        encabezado = ['id', 'titulo', 'fecha', 'hora', 'descripcion', 'duracion', 'importancia']
+        ev = {'id': id_v, 'titulo': titulo, 'fecha': fecha, 'hora': hora, 'descripcion': descripcion, 'duracion': duracion, 'importancia': importancia}
 
+        with open('eventos.csv', 'a', newline='') as eventos:
+            contenido = csv.DictWriter(eventos, fieldnames=encabezado )
+            contenido.writerow(ev)
+            
 
-        with open('eventos.csv', 'a') as file:
-            writer = csv.writer(file)
-            writer.writerow([id_v, titulo, fecha, hora, descripcion, duracion, importancia])
+    def modificar(self):
+        import csv
+        with open('eventos.csv') as eventos:
+            reader = csv.reader(eventos)
+            lista = list(reader)
+        for i in lista:
+            print(i)
+
 
     @classmethod
     def identificador(cls):

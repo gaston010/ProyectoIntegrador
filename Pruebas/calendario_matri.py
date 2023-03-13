@@ -92,6 +92,9 @@ class Calendario(tk.Frame, Evento):
         """        
         etiqueta = evento.widget
         etiqueta.configure(bg="grey")
+        if etiqueta.bind("<Button-3>"):
+            ventana_n = tk.Toplevel(self.root)
+            Evento(ventana_n)
 
     def crear_evento(self, evento):
         """
@@ -103,7 +106,6 @@ class Calendario(tk.Frame, Evento):
         """        
         etiqueta = evento.widget
         etiqueta.configure(bg="green")
-        etiqueta.configure(text="Evento")
         if etiqueta.bind("<Double-Button-1>"):
             ventan_n = tk.Toplevel(self.root)
             Evento(ventan_n)
