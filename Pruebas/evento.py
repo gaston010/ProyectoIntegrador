@@ -19,16 +19,13 @@ class Evento(ttk.Frame):
         self.root = root     
         root.geometry("307x381")
 
-
         titulo=tk.Label(root)
         titulo["text"] = "Titulo del Evento"
         titulo.place(x=10,y=30,width=70,height=25)
-
         gettitulo=tk.Entry(root, textvariable=self.titulo)
         gettitulo.place(x=90,y=30,width=202,height=30)
 
-
-        #Label y boton FECHA
+        # * Label y entry FECHA
         fecha=tk.Label(root)
         fecha["text"] = "Fecha"
         fecha.place(x=0,y=70,width=70,height=25)
@@ -38,9 +35,7 @@ class Evento(ttk.Frame):
         fecha.insert(0,str(fecha_actual))
         fecha.place(x=90,y=70,width=201,height=30)
 
-  
-
-        #Label y boton Hora
+        # * Label y entry Hora
         hora=tk.Label(root)
         hora["text"] = "Hora"
         hora.place(x=0,y=110,width=70,height=25)
@@ -51,8 +46,7 @@ class Evento(ttk.Frame):
         hora.insert(0,str(hora_str))
         hora.place(x=90,y=110,width=200,height=30)
 
-
-        #Label y boton Description
+        # * Label y entry Description
         descripcion=tk.Label(root)
         descripcion["text"] = "Descripcion"
         descripcion.place(x=0,y=150,width=70,height=25)
@@ -60,8 +54,7 @@ class Evento(ttk.Frame):
         descripcion=tk.Entry(root, textvariable=self.descripcion)
         descripcion.place(x=90,y=150,width=200,height=30)
 
-
-        #Label y boton Duracion
+        # * Label y entry Duracion
         duracion=tk.Label(root)
         duracion["text"] = "Duracion"
         duracion.place(x=0,y=190,width=70,height=25)
@@ -70,7 +63,7 @@ class Evento(ttk.Frame):
         duracion.insert(0,'1') # Colocar por defecto el valor de 1 hora 
         duracion.place(x=90,y=190,width=198,height=30)
         
-        #Label y boton Importancia 
+        # * Label y entry Importancia 
         importancia=tk.Label(root)
         importancia["text"] = "Importancia"
         importancia.place(x=0,y=230,width=70,height=25)
@@ -79,21 +72,19 @@ class Evento(ttk.Frame):
         importancia.insert(0,"Si")
         importancia.place(x=90,y=230,width=199,height=30)
         
-
-        #Boton Crear
+        # * Boton Crear
         evento_n=tk.Button(root)
         evento_n["text"] = "Crear Evento"
         evento_n.place(x=10,y=300,width=70,height=30)
         evento_n["command"] = self.crear_nuevo
-        evento_n.delete(0, tk.END) 
-       
-        #Boton Cancelar
+        
+        # * Boton Cancelar
         cancelar=tk.Button(root)
         cancelar["text"] = "Cancelar"
         cancelar.place(x=100,y=300,width=70,height=30)
         cancelar["command"] = self.boton_cancelar
 
-        #Boton Modificar
+        # * Boton Modificar
         modificar=tk.Button(root)
         modificar["text"] = "Modificar Evento"
         modificar.place(x=10,y=350,width=70,height=30)
@@ -167,9 +158,3 @@ class Evento(ttk.Frame):
     def identificador(cls):
         cls.id_evento += 1
         return cls.id_evento
-
-
-# root = tk.Tk()
-# p = Evento(root)
-# root.mainloop()
-
