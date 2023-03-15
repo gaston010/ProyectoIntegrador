@@ -1,3 +1,4 @@
+from csv import writer
 import datetime as dt  # dt FECHA Y HORAS
 import tkinter as tk
 from tkinter import StringVar, ttk, messagebox
@@ -60,7 +61,6 @@ class Evento(ttk.Frame):
         descripcion.place(x=90,y=150,width=200,height=30)
 
 
-
         #Label y boton Duracion
         duracion=tk.Label(root)
         duracion["text"] = "Duracion"
@@ -85,7 +85,8 @@ class Evento(ttk.Frame):
         evento_n["text"] = "Crear Evento"
         evento_n.place(x=10,y=300,width=70,height=30)
         evento_n["command"] = self.crear_nuevo
-
+        evento_n.delete(0, tk.END) 
+       
         #Boton Cancelar
         cancelar=tk.Button(root)
         cancelar["text"] = "Cancelar"
@@ -139,14 +140,19 @@ class Evento(ttk.Frame):
         fecha = dt.datetime.strptime(fecha_get, '%Y-%m-%d').date()
         hora = dt.datetime.strptime(hora_get, "%H:%M").time()
         
-        encabezado = ['id', 'titulo', 'fecha', 'hora', 'descripcion', 'duracion', 'importancia']
-        ev = {'id': id_v, 'titulo': titulo, 'fecha': fecha, 'hora': hora, 'descripcion': descripcion, 'duracion': duracion, 'importancia': importancia}
+        # ! FALTA VALIDAR QUE LOS DATOS INGRESADOS SEAN CORRECTOS
+        # ! Los encabezado no se agregan en el inicio del archivo arreglar tal problema 
+        #encabezado = ['id', 'titulo', 'fecha', 'hora', 'descripcion', 'duracion', 'importancia']
 
-        with open('eventos.csv', 'a', newline='') as eventos:
-            contenido = csv.DictWriter(eventos, fieldnames=encabezado )
-            contenido.writerow(ev)
-            
+        # ? el dicc no guarda median el writerow por un errr de tipo de dato
+        #ev = {'id': id_v, 'titulo': titulo, 'fecha': fecha, 'hora': hora, 'descripcion': descripcion, 'duracion': duracion, 'importancia': importancia}
 
+        
+        with open('eventos.csv', 'a') as file:
+            writer = csv.writer(file)
+            writer.writerow([id_v, titulo, fecha, hora, descripcion, duracion, importancia])
+        
+        # ! modificar no trae la informacion del archivo
     def modificar(self):
         import csv
         with open('eventos.csv') as eventos:
@@ -154,6 +160,7 @@ class Evento(ttk.Frame):
             lista = list(reader)
         for i in lista:
             print(i)
+
 
 
     @classmethod
