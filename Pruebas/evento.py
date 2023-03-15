@@ -138,7 +138,7 @@ class Evento(ttk.Frame):
         # ? el dicc no guarda median el writerow por un errr de tipo de dato
         #ev = {'id': id_v, 'titulo': titulo, 'fecha': fecha, 'hora': hora, 'descripcion': descripcion, 'duracion': duracion, 'importancia': importancia}
 
-        
+        # NO ANDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA GUILLE ARREGLA ESO PORFAVOR
         with open('eventos.csv', 'a') as file:
             writer = csv.writer(file)
             writer.writerow([id_v, titulo, fecha, hora, descripcion, duracion, importancia])
