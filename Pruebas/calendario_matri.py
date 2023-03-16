@@ -2,11 +2,12 @@ import tkinter as tk
 from tkinter import ttk
 import calendar
 from evento import Evento
+from form import EventForm
 
 
 
 
-class Calendario(tk.Frame, Evento):
+class Calendario(tk.Frame, EventForm):
 
     def __init__(self, root):
         super().__init__(root)
@@ -29,8 +30,8 @@ class Calendario(tk.Frame, Evento):
         boton.grid(row=3, column=4)
 
     def mes(self):  
-         # crea  etiquetas para los días de la semana 
-         # ! NO CAMBIAR O MODIFICAR ESTO caso de cambiar fijarse bien en el grid y el dia de la semana se movera x+-1
+        # crea  etiquetas para los días de la semana 
+        # ! NO CAMBIAR O MODIFICAR ESTO caso de cambiar fijarse bien en el grid y el dia de la semana se movera x+-1
         dias_semana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
 
         # ? bg usa un color hexadecimal para dar mejor tonalidad y no estar tan blanco y no muy gris :(xD)
@@ -92,9 +93,6 @@ class Calendario(tk.Frame, Evento):
         """        
         etiqueta = evento.widget
         etiqueta.configure(bg="grey")
-        if etiqueta.bind("<Button-3>"):
-            ventana_n = tk.Toplevel(self.root)
-            Evento(ventana_n)
 
     def crear_evento(self, evento):
         """
@@ -108,13 +106,13 @@ class Calendario(tk.Frame, Evento):
         etiqueta.configure(bg="green")
         if etiqueta.bind("<Double-Button-1>"):
             ventan_n = tk.Toplevel(self.root)
-            Evento(ventan_n)
+            EventForm(ventan_n)
 
 
 
 
 # instancia  de clase
 p = tk.Tk()
-p.grid()
+#p.grid()
 calendario = Calendario(p)
 calendario.mainloop()

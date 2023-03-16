@@ -1,4 +1,4 @@
-from csv import writer
+#from csv import writer
 import datetime as dt  # dt FECHA Y HORAS
 import tkinter as tk
 from tkinter import StringVar, ttk, messagebox
@@ -87,7 +87,7 @@ class Evento(ttk.Frame):
         # * Boton Modificar
         modificar=tk.Button(root)
         modificar["text"] = "Modificar Evento"
-        modificar.place(x=10,y=350,width=70,height=30)
+        modificar.place(x=10,y=350,width=100,height=30)
         modificar["command"] = self.modificar
 
         #Boton Eliminar
@@ -145,15 +145,15 @@ class Evento(ttk.Frame):
         
         # ! modificar no trae la informacion del archivo
     def modificar(self):
+        #traer datos del archivo
         import csv
-        with open('eventos.csv') as eventos:
-            reader = csv.reader(eventos)
-            lista = list(reader)
-        for i in lista:
-            print(i)
-
-
-
+        import datetime as dt
+        with open('eventos.csv', 'r') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                print(row)
+        
+        
     @classmethod
     def identificador(cls):
         cls.id_evento += 1
