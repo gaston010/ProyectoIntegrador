@@ -1,4 +1,5 @@
-Titulo,Fecha,Hora,Descripcion,Importancia
+Titulo,Fecha,Hora,Descripcion,Duracion,Importancia
 Martes,17/03/2023,17:39,poco,False
 Ma,17/03/2023,17:39,d,False
 fe,17/03/2023,18:10,fe,False
+pepeguia,17/03/2023,18:33,dd,1 hora,False
