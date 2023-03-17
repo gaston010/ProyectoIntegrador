@@ -50,7 +50,7 @@ class Calendario(tk.Frame, EventForm):
         fila = 1
         columna = self.dia_semana
         for dia in range(1, self.dias_mes + 1):
-            etiqueta = tk.Label(self.root, text=dia, font=("Fira Code", 12), width=10, height=5, bg="#eee", bd=1, relief="solid")
+            etiqueta = tk.Label(self.root, text=dia, font=("Arial", 12), width=10, height=5, bg="#eee", bd=1, relief="solid")
             etiqueta.grid(row=fila+2, column=columna, padx=2, pady=2)
             columna += 1
             if columna > 6:
@@ -60,7 +60,6 @@ class Calendario(tk.Frame, EventForm):
             etiqueta.bind("<Enter>", self.mostrar_dia)
 
             etiqueta.bind("<Button-1>", self.color_importante)
-            etiqueta.bind("<Button-3>", self.color_normal)
             etiqueta.bind("<Double-Button-1>", self.crear_evento)
 
 
@@ -84,15 +83,6 @@ class Calendario(tk.Frame, EventForm):
         etiqueta = evento.widget
         etiqueta.configure(bg="red")
     
-    def color_normal(self, evento):
-        """
-        Cambia el color de fondo de la etiqueta que se seleccionó para indicar que dicho dia tiene un evento
-
-        Args:
-                evento (_event_widget_): el evento que se ejecuta al hacer click derecho sobre la etiqueta(label) DIA
-        """        
-        etiqueta = evento.widget
-        etiqueta.configure(bg="grey")
 
     def crear_evento(self, evento):
         """
