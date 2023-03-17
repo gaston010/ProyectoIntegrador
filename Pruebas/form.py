@@ -90,6 +90,9 @@ class EventForm:
         if self.titulo_var.get() == "":
             messagebox.showwarning("Error", "El título es obligatorio")
             return
+        elif self.comprobar_hora():
+            messagebox.showwarning("Error", "Contiene evento en el mismo horario")
+            return
         else:
             data = [
                 self.titulo_var.get(),
@@ -138,6 +141,21 @@ class EventForm:
                     self.importancia_var.set(False)
                     return
             messagebox.showwarning("Error", "No se encontró el evento")
+        
+    
+    def comprobar_hora(self):
+        fecha_actual = self.fecha_var.get()
+        hora_actual = self.hora_var.get()
+
+
+        with open("eventos.csv", newline="") as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                fecha = row[1]
+                hora = row[2]
+                
+                if fecha == fecha_actual and hora == hora_actual:
+                    return True
         
 
     @staticmethod
