@@ -4,23 +4,23 @@
 ## Calendario de eventos
 Para este proyecto se deberá diseñar una aplicación de escritorio en la que puedan crear, editar y eliminar eventos en un calendario. Un evento debe estar compuesto de los siguientes datos:
 
-    ● Título. ✔️
-    ● Fecha y hora.✔️
-    ● Duración: por defecto 1 hora. ✔️
-    ● Descripción. Un evento puede o no tener una descripción. ✔️
-    ● Importancia: normal e importante. ✔️
+    ● Título. ✔️(finalizado)
+    ● Fecha y hora.✔️(finalizado)
+    ● Duración: por defecto 1 hora. ✔️(finalizado)
+    ● Descripción. Un evento puede o no tener una descripción. ✔️(finalizado)
+    ● Importancia: normal e importante. ✔️(finalizado)
     ● Fecha y hora del recordatorio. ⭐
-    ● Etiquetas: palabras claves para identificar un evento y luego buscarlo.⭐
+    ● Etiquetas: palabras claves para identificar un evento y luego buscarlo.⭐(parcial por otro metodo)
 
 # Las funcionalidades que debe tener la aplicación son las siguientes:
    
-    ● Crear un evento. Por defecto se selecciona la fecha y hora actual. ✔️
+    ● Crear un evento. Por defecto se selecciona la fecha y hora actual. ✔️(finalizado)
     ● Modificar un evento. ✔️
-    ● Eliminar un evento. ✔️
+    ● Eliminar un evento. ✔️(Finalizado)
     ● Mostrar recordatorio. ⭐
     ● Evitar crear 2 eventos el mismo día a la misma hora.⭐
-    ● Buscar y/o filtrar eventos por:   
-        ○ Título. ⭐    
+    ● Buscar y/o filtrar eventos por:   (finalizado)
+        ○ Título. ⭐    (busqueda por titulo)
         ○ Etiquetas. ⭐
 
 # Deberá contar con las siguientes vistas (ventanas):
