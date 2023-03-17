@@ -18,7 +18,7 @@ Para este proyecto se deberá diseñar una aplicación de escritorio en la que p
     ● Modificar un evento. ✔️
     ● Eliminar un evento. ✔️(Finalizado)
     ● Mostrar recordatorio. ⭐
-    ● Evitar crear 2 eventos el mismo día a la misma hora.⭐
+    ● Evitar crear 2 eventos el mismo día a la misma hora.⭐(finalizado filtrado por hora)
     ● Buscar y/o filtrar eventos por:   (finalizado)
         ○ Título. ⭐    (busqueda por titulo)
         ○ Etiquetas. ⭐
@@ -27,7 +27,7 @@ Para este proyecto se deberá diseñar una aplicación de escritorio en la que p
     
     ● Semanal. Ventana principal por defecto.
         ○ Se muestran los eventos, ordenados cronológicamente, que hay cada día de la semana actual.✔️
-        ○ Los eventos importantes deberán estar destacados de alguna forma (aplicar la misma funcionalidad a la vista mensual). ✔️
+        ○ Los eventos importantes deberán estar destacados de alguna forma (aplicar la misma funcionalidad a la vista mensual). ✔️(finalizado)
         ○ Permitir moverse de semana en semana con botones de “anterior semana” y “siguiente semana”. ⭐
     ● Muestra un evento ya existente. ✔️
     ● Carga/modificación de un evento. ✔️
