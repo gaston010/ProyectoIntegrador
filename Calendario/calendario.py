@@ -1,13 +1,11 @@
 import tkinter as tk
 from tkinter import ttk
 import calendar
-from evento import Evento
-from form import EventForm
+from eventos import Evento
 
 
 
-
-class Calendario(tk.Frame, EventForm):
+class Calendario(tk.Frame, Evento):
 
     def __init__(self, root):
         super().__init__(root)
@@ -96,7 +94,7 @@ class Calendario(tk.Frame, EventForm):
         etiqueta.configure(bg="green")
         if etiqueta.bind("<Double-Button-1>"):
             ventan_n = tk.Toplevel(self.root)
-            EventForm(ventan_n)
+            Evento(ventan_n)
 
 
 

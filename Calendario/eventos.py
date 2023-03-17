@@ -3,7 +3,7 @@ from tkinter import messagebox,ttk,ttk
 import csv
 import datetime as dt
 
-class EventForm:
+class Evento:
     id_evento = 0
 
     def __init__(self, root):
