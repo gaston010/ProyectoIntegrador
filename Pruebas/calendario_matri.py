@@ -1,7 +1,13 @@
 import tkinter as tk
+from tkinter import ttk
 import calendar
+from evento import Evento
+from form import EventForm
 
-class Calendario(tk.Frame):
+
+
+
+class Calendario(tk.Frame, EventForm):
 
     def __init__(self, root):
         super().__init__(root)
@@ -14,18 +20,18 @@ class Calendario(tk.Frame):
         self.año_actual = 2023 # ejemplo
         self.mes_actual = 3 # ejemplo
         self.dia_semana, self.dias_mes = calendar.monthrange(self.año_actual, self.mes_actual)
-        self.mostrar_mes()
+        self.mes()
 
 
     def mostrar_mes(self):
         # mostrar el mes en la ventana principal
         self.root.title(calendar.month_name[self.mes_actual] + " " + str(self.año_actual))
         boton = tk.Button(self.root, text="Mes", command=self.mes)
-        boton.grid(row=0, column=0)
+        boton.grid(row=3, column=4)
 
     def mes(self):  
-         # crea  etiquetas para los días de la semana 
-         # ! NO CAMBIAR O MODIFICAR ESTO caso de cambiar fijarse bien en el grid y el dia de la semana se movera x+-1
+        # crea  etiquetas para los días de la semana 
+        # ! NO CAMBIAR O MODIFICAR ESTO caso de cambiar fijarse bien en el grid y el dia de la semana se movera x+-1
         dias_semana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
 
         # ? bg usa un color hexadecimal para dar mejor tonalidad y no estar tan blanco y no muy gris :(xD)
@@ -40,7 +46,6 @@ class Calendario(tk.Frame):
             et_dia = tk.Label(self.root)
             et_dia.bind("<Enter>", self.mostrar_dia) #ESTO SOLO MUESTRA LOS NOMBRES NO AGARRA EL DIA EN SI
             
-
         # crear etiquetas para cada día del mes y mostrarlos en la ventana
         fila = 1
         columna = self.dia_semana
@@ -58,6 +63,7 @@ class Calendario(tk.Frame):
             etiqueta.bind("<Button-3>", self.color_normal)
             etiqueta.bind("<Double-Button-1>", self.crear_evento)
 
+
     def consola_prueba(self, evento):
         self.root.title("prueba")
 
@@ -74,7 +80,7 @@ class Calendario(tk.Frame):
 
         Args:
                 evento (_event_widget_): el evento que se ejecuta al hacer click izquierdo sobre la etiqueta(label) DIA
-         """        
+        """        
         etiqueta = evento.widget
         etiqueta.configure(bg="red")
     
@@ -84,7 +90,7 @@ class Calendario(tk.Frame):
 
         Args:
                 evento (_event_widget_): el evento que se ejecuta al hacer click derecho sobre la etiqueta(label) DIA
-         """        
+        """        
         etiqueta = evento.widget
         etiqueta.configure(bg="grey")
 
@@ -95,12 +101,18 @@ class Calendario(tk.Frame):
 
         Args:
                 evento (_type_): _description_
-         """        
+        """        
         etiqueta = evento.widget
         etiqueta.configure(bg="green")
-        etiqueta.configure(text="Evento")
-    
+        if etiqueta.bind("<Double-Button-1>"):
+            ventan_n = tk.Toplevel(self.root)
+            EventForm(ventan_n)
 
+
+
+
+# instancia  de clase
 p = tk.Tk()
+#p.grid()
 calendario = Calendario(p)
 calendario.mainloop()
