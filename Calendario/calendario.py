@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from ttkthemes import ThemedTk
 import calendar
 from eventos import Evento
 
@@ -99,8 +100,14 @@ class Calendario(tk.Frame, Evento):
 
 
 
-# instancia  de clase
-p = tk.Tk()
-#p.grid()
-calendario = Calendario(p)
-calendario.mainloop()
+if __name__ == "__main__":
+    p = ThemedTk(theme="blue") # no funciona :(
+    calendario = Calendario(p)
+    calendario.mainloop()
+
+
+
+# # instancia  de clase
+# p = tk.Tk()
+# calendario = Calendario(p)
+# calendario.mainloop()
