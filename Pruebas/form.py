@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox,ttk
 import csv
 import datetime as dt
 
@@ -16,6 +16,7 @@ class EventForm:
         self.hora_var = tk.StringVar()
         self.descripcion_var = tk.StringVar()
         self.importancia_var = tk.BooleanVar()
+        self.buscar = tk.StringVar()
         #self.id_evento = self.identificador()
 
 
@@ -29,7 +30,9 @@ class EventForm:
 
         # Crear etiquetas y campos de entrada
         tk.Label(root, text="Título:").grid(row=0, column=0)
-        tk.Entry(root, textvariable=self.titulo_var).grid(row=0, column=1)
+        tk.Entry(root,textvariable=self.titulo_var).grid(row=0, column=1)
+        # para que el campo de entrada esté vacío y no de error abajo
+
 
         tk.Label(root, text="Fecha (DD/MM/AAAA):",).grid(row=1, column=0)
         tk.Entry(root, textvariable=self.fecha_var).grid(row=1, column=1)
@@ -43,12 +46,13 @@ class EventForm:
         tk.Label(root, text="Importancia:").grid(row=4, column=0)
         tk.Checkbutton(root, variable=self.importancia_var).grid(row=4, column=1)
 
+        tk.Label(root, text="Buscar Evento:").grid(row=0, column=2)
+        tk.Entry(root, textvariable=self.buscar).grid(row=0, column=3)
+
         # Crear botones
-        # tk.Button(root, text="Crear evento", command=self.crear_evento).grid(row=5, column=0)
-        tk.Button(root, text="Modificar evento", command=self.buscar_evento).grid(row=5, column=1)
         tk.Button(root, text="Eliminar evento", command=self.eliminar_evento).grid(row=5, column=2)
-        tk.Button(root, text="Guardar", command=self.guardar).grid(row=6, column=0)
-        tk.Button(root, text="Cargar", command=self.cargar).grid(row=6, column=1)
+        tk.Button(root, text="Crear Nuevo Evento", command=self.guardar).grid(row=6, column=0)
+        tk.Button(root, text="Buscar", command=self.buscar_evento).grid(row=1, column=3)
 
 
 
@@ -76,31 +80,40 @@ class EventForm:
         self.descripcion_var.set("")
         self.importancia_var.set(False)
 
+# esto ya anda no TOCAR
     def guardar(self):
-        id_v = self.id_evento = self.identificador()
-        import os
-        import csv
-
-        datos = [{"ID": id_v, 
-                "Titulo": self.titulo_var.get(), 
-                "Fecha": self.fecha_var.get(),
-                "Hora": self.hora_var.get(),
-                "Descripcion": self.descripcion_var.get(), 
-                "Importancia": self.importancia_var.get()
-                }]
-
-        file_exists = os.path.exists("eventos.csv")
-        if not file_exists:
-            messagebox.showinfo("Error", "No existe el archivo")
+        # genera la hora y le facha actual para poder ser usado dendtro de un ser guardaro y limpie los campos
+        fecha_actual = dt.date.today()
+        hora_actual = dt.datetime.now().time()
+        
+        # Comprueba si el titulo esta vacio
+        if self.titulo_var.get() == "":
+            messagebox.showwarning("Error", "El título es obligatorio")
+            return
         else:
+            data = [
+                self.titulo_var.get(),
+                self.fecha_var.get(),
+                self.hora_var.get(),
+                self.descripcion_var.get(),
+                self.importancia_var.get()
+            ]
+            cabecera = ["Titulo", "Fecha", "Hora", "Descripcion", "Importancia"]
             with open("eventos.csv", "a", newline="") as csvfile:
-                campos = ["ID", "Titulo", "Fecha", "Hora", "Descripcion", "Importancia"]
-                writer = csv.DictWriter(csvfile, fieldnames=campos)
-                writer.writeheader()
-                for data in datos:
-                    writer.writerow(data)
+                writer = csv.writer(csvfile)
+                if csvfile.tell() == 0:
+                    writer.writerow(cabecera)
+                writer.writerow(data)
+                messagebox.showinfo("Información", "Evento guardado correctamente")
+                
+                self.titulo_var.set("")
+                self.fecha_var.set(fecha_actual.strftime("%d/%m/%Y"))
+                self.hora_var.set(hora_actual.strftime("%H:%M"))
+                self.descripcion_var.set("")
+                self.importancia_var.set(False)
 
 # ! ESTO TRAE TODO LA LISTA TOTAL DE LOS EVENTO NO IMPORT LOS DIA NI LAS FECHAS
+# impletarlo con un text area si es que existe
     def cargar(self):
         with open("eventos.csv", newline="") as csvfile:
             reader = csv.reader(csvfile)
@@ -112,13 +125,20 @@ class EventForm:
                 #self.importancia_var.set(row[4]) -> No se puede asignar un valor booleano a un StringVar err=??
 
     def buscar_evento(self):
-        buscado = self.titulo_var.get()
+        buscado = self.buscar.get()
         with open("eventos.csv", newline="") as csvfile:
             reader = csv.reader(csvfile)
             for row in reader:
-                if row[0] == buscado:
-                # traer los datos del csv que sean igual al buscado
-                    pass
+                titulo = row[0]
+                if titulo == buscado:
+                    self.titulo_var.set(row[0])
+                    self.fecha_var.set(row[1])
+                    self.hora_var.set(row[2])
+                    self.descripcion_var.set(row[3])
+                    self.importancia_var.set(False)
+                    return
+            messagebox.showwarning("Error", "No se encontró el evento")
+        
 
     @staticmethod
     def identificador():
