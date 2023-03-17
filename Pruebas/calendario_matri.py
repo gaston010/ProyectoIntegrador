@@ -50,7 +50,7 @@ class Calendario(tk.Frame, EventForm):
         fila = 1
         columna = self.dia_semana
         for dia in range(1, self.dias_mes + 1):
-            etiqueta = tk.Label(self.root, text=dia, font=("Fira Code", 12), width=10, height=5, bg="#eee", bd=1, relief="solid")
+            etiqueta = tk.Label(self.root, text=dia, font=("Arial", 12), width=10, height=5, bg="#eee", bd=1, relief="solid")
             etiqueta.grid(row=fila+2, column=columna, padx=2, pady=2)
             columna += 1
             if columna > 6:
