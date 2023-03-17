@@ -59,26 +59,33 @@ class EventForm:
     def eliminar_evento(self):
         # Obtener el título del evento a eliminar
         titulo = self.titulo_var.get()
+        if titulo == "":
+            messagebox.showwarning("Error", "El título es obligatorio use el boton buscar")
+            return
+        else:
 
-        # Leer los eventos desde el archivo CSV
-        eventos = []
-        with open("eventos.csv", newline="") as csvfile:
-            reader = csv.reader(csvfile)
-            for row in reader:
-                if row[0] != titulo:  # si el título no coincide, agregar el evento a la lista
-                    eventos.append(row)
 
-        # Escribir los eventos actualizados al archivo CSV
-        with open("eventos.csv", "w", newline="") as csvfile:
-            writer = csv.writer(csvfile)
-            writer.writerows(eventos)
+            # Leer los eventos desde el archivo CSV
+            eventos = []
+            with open("eventos.csv", newline="") as csvfile:
+                reader = csv.reader(csvfile)
+                for row in reader:
+                    if row[0] != titulo:  # si el título no coincide, agregar el evento a la lista
+                        eventos.append(row)
 
-        # Limpiar los campos de entrada
-        self.titulo_var.set("")
-        self.fecha_var.set("")
-        self.hora_var.set("")
-        self.descripcion_var.set("")
-        self.importancia_var.set(False)
+            # Escribir los eventos actualizados al archivo CSV
+            with open("eventos.csv", "w", newline="") as csvfile:
+                writer = csv.writer(csvfile)
+                writer.writerows(eventos)
+
+            # Limpiar los campos de entrada
+            fecha_actual = dt.date.today()
+            hora_actual = dt.datetime.now().time()
+            self.titulo_var.set("")
+            self.fecha_var.set(fecha_actual.strftime("%d/%m/%Y"))
+            self.hora_var.set(hora_actual.strftime("%H:%M"))
+            self.descripcion_var.set("")
+            self.importancia_var.set(False)
 
 # esto ya anda no TOCAR
     def guardar(self):
@@ -153,7 +160,7 @@ class EventForm:
             for row in reader:
                 fecha = row[1]
                 hora = row[2]
-                
+
                 if fecha == fecha_actual and hora == hora_actual:
                     return True
         
