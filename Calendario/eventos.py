@@ -96,6 +96,7 @@ class Evento:
             self.descripcion_var.set("")
             self.duracion.set("1 Hora")
             self.importancia_var.set(False)
+            
 
 # esto ya anda no TOCAR
     def guardar(self):
