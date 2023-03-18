@@ -112,14 +112,14 @@ class Evento:
             messagebox.showwarning("Error", "Contiene evento en el mismo horario")
             return
         else:
-            data = [
-                self.titulo_var.get(),
-                self.fecha_var.get(),
-                self.hora_var.get(),
-                self.descripcion_var.get(),
-                self.duracion.get(),
-                self.importancia_var.get()
-            ]
+            data = {
+                    self.titulo_var.get(),
+                    self.fecha_var.get(),
+                    self.hora_var.get(),
+                    self.descripcion_var.get(),
+                    self.duracion.get(),
+                    self.importancia_var.get()
+                    }
             cabecera = ["Titulo", "Fecha", "Hora", "Descripcion", "Duracion", "Importancia"]
             with open("eventos.csv", "a", newline="") as archivo:
                 contenido = csv.writer(archivo)
