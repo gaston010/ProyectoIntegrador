@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import ttk
-from ttkthemes import ThemedTk
 import calendar
 from eventos import Evento
 
@@ -30,7 +29,6 @@ class Calendario(tk.Frame, Evento):
 
     def mes(self):  
         # crea  etiquetas para los días de la semana 
-        # ! NO CAMBIAR O MODIFICAR ESTO caso de cambiar fijarse bien en el grid y el dia de la semana se movera x+-1
         dias_semana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
 
         # ? bg usa un color hexadecimal para dar mejor tonalidad y no estar tan blanco y no muy gris :(xD)
@@ -101,8 +99,8 @@ class Calendario(tk.Frame, Evento):
 
 
 if __name__ == "__main__":
-    p = ThemedTk(theme="blue") # no funciona :(
-    calendario = Calendario(p)
+
+    calendario = Calendario()
     calendario.mainloop()
 
 
