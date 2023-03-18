@@ -181,3 +181,4 @@ class Evento:
 
 comentario = "Cristian es colgado."
 print(comentario)
+p="esto se va a poner feo"
