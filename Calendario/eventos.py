@@ -179,5 +179,5 @@ class Evento:
                 if fecha == fecha_actual and hora == hora_actual:
                     return True
 
-#Cristian esta haciendo macanas y no sabe que hacer
-print("Cristian es colgado.")
+comentario = "Cristian es colgado."
+print(comentario)
