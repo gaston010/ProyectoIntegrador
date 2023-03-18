@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox,ttk
 import csv
 import datetime as dt
+import os
 
 class Evento:
     id_evento = 0
@@ -100,6 +101,7 @@ class Evento:
 
 # esto ya anda no TOCAR
     def guardar(self):
+        import os
         # genera la hora y le facha actual para poder ser usado dendtro de un ser guardaro y limpie los campos
         fecha_actual = dt.date.today()
         hora_actual = dt.datetime.now().time()
@@ -112,19 +114,20 @@ class Evento:
             messagebox.showwarning("Error", "Contiene evento en el mismo horario")
             return
         else:
-            data = [
-                    self.titulo_var.get(),
-                    self.fecha_var.get(),
-                    self.hora_var.get(),
-                    self.descripcion_var.get(),
-                    self.duracion.get(),
-                    self.importancia_var.get()
-                   ]
+            data = {
+                    "Titulo":self.titulo_var.get(),
+                    "Fecha":self.fecha_var.get(),
+                    "Hora":self.hora_var.get(),
+                    "Descripcion":self.descripcion_var.get(),
+                    "Duracion":self.duracion.get(),
+                    "Importancia":self.importancia_var.get()
+                    }
             cabecera = ["Titulo", "Fecha", "Hora", "Descripcion", "Duracion", "Importancia"]
+            archivo_existe= os.path.exists("eventos.csv")
             with open("eventos.csv", "a", newline="") as archivo:
-                contenido = csv.writer(archivo)
-                if archivo.tell() == 0:
-                    contenido.writerow(cabecera)
+                contenido = csv.DictWriter(archivo,fieldnames=cabecera)
+                if not archivo_existe:
+                    contenido.writeheader()
                 contenido.writerow(data)
                 messagebox.showinfo("Información", "Evento guardado correctamente")
                 
