@@ -98,14 +98,10 @@ class Calendario(tk.Frame, Evento):
 
 
 
-if __name__ == "__main__":
-
-    calendario = Calendario()
-    calendario.mainloop()
 
 
 
-# # instancia  de clase
-# p = tk.Tk()
-# calendario = Calendario(p)
-# calendario.mainloop()
+#instancia  de clase
+p = tk.Tk()
+calendario = Calendario(p)
+calendario.mainloop()
