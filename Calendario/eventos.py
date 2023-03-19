@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import messagebox,ttk
 import csv
 import datetime as dt
-import os
 
 class Evento:
     id_evento = 0
@@ -10,6 +9,7 @@ class Evento:
     def __init__(self, root):
         self.root = root
         root.title("Formulario de eventos")
+        self.root.geometry("550x350")
 
         # Definir variables de control
         self.titulo_var = tk.StringVar()
@@ -52,11 +52,17 @@ class Evento:
         tk.Checkbutton(root, variable=self.importancia_var).grid(row=5, column=1)
 
         tk.Label(root, text="Duracion:").grid(row=4, column=0)
-        tk.Entry(root, textvariable=self.duracion).grid(row=4, column=1)
-        #ttk.Combobox(root, textvariable=self.duracion, values=["1 Hora", "2 Horas", "3 Horas", "4 Horas", "5 Horas", "6 Horas", "7 Horas", "8 Horas", "9 Horas", "10 Horas", "11 Horas", "12 Horas", "13 Horas", "14 Horas", "15 Horas", "16 Horas", "17 Horas", "18 Horas", "19 Horas", "20 Horas", "21 Horas", "22 Horas", "23 Horas", "24 Horas"]).grid(row=4, column=1)
+        ttk.Combobox(root, textvariable=self.duracion, values=["1 Hora", "2 Horas", "3 Horas", "4 Horas", "5 Horas", "6 Horas", "7 Horas", "8 Horas", "9 Horas", "10 Horas", "11 Horas", "12 Horas", "13 Horas", "14 Horas", "15 Horas", "16 Horas", "17 Horas", "18 Horas", "19 Horas", "20 Horas", "21 Horas", "22 Horas", "23 Horas", "24 Horas"]).grid(row=4, column=1)
 
         tk.Label(root, text="Buscar Evento:").grid(row=0, column=2)
         tk.Entry(root, textvariable=self.buscar).grid(row=0, column=3)
+
+        tk.Label(root, text="Eventos:").grid(row=8, column=0)
+        self.lado = tk.Text(root, width=70, height=8)
+        self.lado.grid(row=9, column=0, columnspan=4)
+        self.lado.insert(tk.END, "Titulo, Fecha, Hora, Descripcion, Duracion, Importancia\n")
+        tk.Button(root, text="Mostrar Eventos", command=self.cargar_eventos).grid(row=8, column=2)
+
 
         # Crear botones
         tk.Button(root, text="Crear Nuevo Evento", command=self.guardar).grid(row=6, column=0)
@@ -112,7 +118,7 @@ class Evento:
             messagebox.showwarning("Error", "El título es obligatorio")
             return
         elif self.comprobar_hora():
-            messagebox.showwarning("Error", "Contiene evento en el mismo horario")
+            messagebox.showwarning("Error", "Un Evento tiene el mismo horario, por favor eligir otro")
             return
         else:
             data = {
@@ -167,13 +173,10 @@ class Evento:
                     self.importancia_var.set(False)
                     return
             messagebox.showwarning("Error", "No se encontró el evento")
-        
-    
+
     def comprobar_hora(self):
         fecha_actual = self.fecha_var.get()
         hora_actual = self.hora_var.get()
-
-
         with open("eventos.csv", newline="") as archivo:
             contenido = csv.reader(archivo)
             for row in contenido:
@@ -183,5 +186,11 @@ class Evento:
                 if fecha == fecha_actual and hora == hora_actual:
                     return True
 
-comentario = "Cristian es colgado."
-print(comentario)
+    def cargar_eventos(self):
+        with open("eventos.csv", newline="") as archivo:
+            contenido = csv.reader(archivo)
+            contenido = list(contenido)
+            contenido.sort(key=lambda x: x[1]) # https://es.stackoverflow.com/questions/76439/c%c3%b3mo-puedo-ordenar-una-columna-de-fechas-en-el-orden-del-calendario-usando-pand
+            for row in contenido:
+                self.lado.insert(tk.END, row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[4] + " " + row[5] + "\n")
+                
