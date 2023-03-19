@@ -106,6 +106,7 @@ class Evento:
         fecha_actual = dt.date.today()
         hora_actual = dt.datetime.now().time()
         
+    
         # Comprueba si el titulo esta vacio
         if self.titulo_var.get() == "":
             messagebox.showwarning("Error", "El título es obligatorio")
@@ -169,15 +170,19 @@ class Evento:
         
     
     def comprobar_hora(self):
+        import os
+
         fecha_actual = self.fecha_var.get()
         hora_actual = self.hora_var.get()
 
-
-        with open("eventos.csv", newline="") as archivo:
+        with open("eventos.csv","a", newline="") as archivo:#modifique "a" para que cree el archivo eventos.csv
             contenido = csv.reader(archivo)
-            for row in contenido:
-                fecha = row[1]
-                hora = row[2]
+            if not os.path.getsize("eventos.csv") == 0:#pregunta si el tamaño del archivo no es 0.
+                for row in contenido:
+                    fecha = row[1]
+                    hora = row[2]
 
-                if fecha == fecha_actual and hora == hora_actual:
-                    return True
+                    if fecha == fecha_actual and hora == hora_actual:
+                        return True
+            else:
+                return False
