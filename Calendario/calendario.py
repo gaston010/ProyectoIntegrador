@@ -103,5 +103,6 @@ class Calendario(tk.Frame, Evento):
 
 #instancia  de clase
 p = tk.Tk()
+p.grid()
 calendario = Calendario(p)
 calendario.mainloop()
