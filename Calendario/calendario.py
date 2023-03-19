@@ -29,7 +29,6 @@ class Calendario(tk.Frame, Evento):
 
     def mes(self):  
         # crea  etiquetas para los días de la semana 
-        # ! NO CAMBIAR O MODIFICAR ESTO caso de cambiar fijarse bien en el grid y el dia de la semana se movera x+-1
         dias_semana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
 
         # ? bg usa un color hexadecimal para dar mejor tonalidad y no estar tan blanco y no muy gris :(xD)
@@ -99,8 +98,10 @@ class Calendario(tk.Frame, Evento):
 
 
 
-# instancia  de clase
+
+
+
+#instancia  de clase
 p = tk.Tk()
-#p.grid()
 calendario = Calendario(p)
 calendario.mainloop()

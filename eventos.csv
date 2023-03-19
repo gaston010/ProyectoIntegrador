@@ -1,6 +1,11 @@
 Titulo,Fecha,Hora,Descripcion,Duracion,Importancia
 Martes,17/03/2023,17:39,poco,False
-Ma,17/03/2023,17:39,d,False
 fe,17/03/2023,18:10,fe,False
 pepeguia,17/03/2023,18:33,dd,1 hora,False
+<<<<<<< HEAD
 Mes,19/03/2023,00:58,dia,2 Horas,False
+=======
+00:00,True,17/06/2023,Cumple Ella,1 hora,Saludar
+Mi cumple,14/11/2023,00:00,Fiesta Loca,1 hora,True
+Cumple Ella,17/06/2023,00:00,Saludar,1 Hora,True
+>>>>>>> 8afc9831fc2bfaf7c6bf8dbc1334a4e47a87b50a
