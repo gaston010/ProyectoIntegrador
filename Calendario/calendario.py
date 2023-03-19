@@ -19,7 +19,7 @@ class Calendario(tk.Frame, Evento):
         self.mes_actual = 3 # ejemplo
         self.dia_semana, self.dias_mes = calendar.monthrange(self.año_actual, self.mes_actual)
         self.mes()
-
+        
 
     def mostrar_mes(self):
         # mostrar el mes en la ventana principal

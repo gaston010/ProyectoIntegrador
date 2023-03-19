@@ -51,7 +51,7 @@ class Evento:
         tk.Checkbutton(root, variable=self.importancia_var).grid(row=5, column=1)
 
         tk.Label(root, text="Duracion:").grid(row=4, column=0)
-        tk.Entry(root, textvariable=self.duracion).grid(row=4, column=1)
+        ttk.Combobox(root, textvariable=self.duracion, values=["1 Hora", "2 Horas", "3 Horas", "4 Horas", "5 Horas", "6 Horas", "7 Horas", "8 Horas", "9 Horas", "10 Horas", "11 Horas", "12 Horas", "13 Horas", "14 Horas", "15 Horas", "16 Horas", "17 Horas", "18 Horas", "19 Horas", "20 Horas", "21 Horas", "22 Horas", "23 Horas", "24 Horas"]).grid(row=4, column=1)
 
         tk.Label(root, text="Buscar Evento:").grid(row=0, column=2)
         tk.Entry(root, textvariable=self.buscar).grid(row=0, column=3)
