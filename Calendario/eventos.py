@@ -185,6 +185,7 @@ class Evento:
 
                 if fecha == fecha_actual and hora == hora_actual:
                     return True
+            return False
 
     def cargar_eventos(self):
         with open("eventos.csv", newline="") as archivo:
