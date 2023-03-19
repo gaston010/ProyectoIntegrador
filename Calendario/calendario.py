@@ -95,12 +95,6 @@ class Calendario(tk.Frame, Evento):
             ventan_n = tk.Toplevel(self.root)
             Evento(ventan_n)
 
-
-
-
-
-
-
 #instancia  de clase
 p = tk.Tk()
 calendario = Calendario(p)
