@@ -181,6 +181,3 @@ class Evento:
 
                 if fecha == fecha_actual and hora == hora_actual:
                     return True
-
-comentario = "Cristian es colgado."
-print(comentario)
