@@ -60,13 +60,14 @@ class Evento:
         tk.Label(root, text="Eventos:").grid(row=8, column=0)
         self.lado = tk.Text(root, width=70, height=8)
         self.lado.grid(row=9, column=0, columnspan=4)
-        self.lado.insert(tk.END, "Titulo, Fecha, Hora, Descripcion, Duracion, Importancia\n")
+        #self.lado.insert(tk.END, "Titulo, Fecha, Hora, Descripcion, Duracion, Importancia\n")
 
         # Crear botones
         tk.Button(root, text="Crear Nuevo Evento", command=self.guardar).grid(row=6, column=0)
         tk.Button(root, text="Modificar", command=self.modificar).grid(row=7, column=0)
         tk.Button(root, text="Eliminar evento", command=self.eliminar_evento).grid(row=6, column=2)
         tk.Button(root, text="Buscar", command=self.buscar_evento).grid(row=1, column=3)
+        tk.Button(root, text="Mostrar Eventos", command=self.cargar_eventos).grid(row=7, column=2)
 
 
 # FUNCIONAL NO TOCAR
@@ -202,7 +203,7 @@ class Evento:
                     return True
             else:
                 return False
-                
+
     def cargar_eventos(self):
         with open("eventos.csv", newline="") as archivo:
             contenido = csv.reader(archivo)
