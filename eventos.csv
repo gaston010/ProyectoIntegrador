@@ -1,4 +1,6 @@
-MiCumple,14/11/2023,00:00,Fiesta,24 horas,True
-Evento3,19/03/2023,22:11,Desc3,1 Hora,True
-Evento5,25/03/2023,22:11,Desc5,1 Hora,False
-1,19/03/2023,22:10,Desc2,1 Hora,False
+Titulo,Fecha,Hora,Descripcion,Duracion,Importancia
+Evento1,20/03/2023,20:06,Desc1,1 hora,True
+Evento2,21/03/2023,20:06,Desc2,1 Hora,True
+Evento3,22/03/2023,20:07,Desc3,1 Hora,False
+Evento4,23/03/2023,20:22,Desc4,1 hora,True
+Evento5,24/03/2023,20:24,Desc5,1 Hora,False
