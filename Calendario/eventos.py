@@ -143,57 +143,35 @@ class Evento:
             self.importancia_var.set(False)
 
 # ! ESTO TRAE TODO LA LISTA TOTAL DE LOS EVENTO NO IMPORT LOS DIA NI LAS FECHAS
-# impletarlo con un text area si es que existe
-    #Original Guillermo
-    # def modificar(self):
-    #     with open("eventos.csv", newline="") as archivo:
-    #         contenido = csv.reader(archivo)
-    #         for row in contenido:
-    #             self.titulo_var.set(row[0])
-    #             self.fecha_var.set(row[1])
-    #             self.hora_var.set(row[2])
-    #             self.descripcion_var.set(row[3])
-    #             self.duracion.set(row[4])
-    #             #self.importancia_var.set(row[4]) -> No se puede asignar un valor booleano a un StringVar err=??
-    
-    #ModificarByCristian
     def modificar(self):
-        pos_mod = self.buscar_evento()#Esto me devuelve la posicion del buscado
-        print("****************************************************************")
-        print(pos_mod)#Los print son para guiarme apenas este todo ok los borramos. 
+        pos_mod = self.buscar_evento() #Esto me devuelve la posicion del buscado
+        # print("****************************************************************")
+        # print(pos_mod)#Los print son para guiarme apenas este todo ok los borramos. 
         with open("eventos.csv", "r",newline="") as archivo:
             contenido = csv.reader(archivo)
-            print(contenido)
-            contenido=list(contenido)#Transformo a lista el objeto csv.reader
-            print(contenido)
-            print("****************************************************************")
-            # contenido[pos_mod]=[ #No logro traer lo que el usuario coloca en las boxtext 
-            #                     self.titulo_var.get(),
-            #                     self.fecha_var.get(),
-            #                     self.hora_var.get(),
-            #                     self.descripcion_var.get(),
-            #                     self.duracion_var.get(),
-            #                     self.importancia_var.get()
-            #                     ]
-            contenido[pos_mod]=[#uso esto para ver que el metodo funcione osea lo seteo manualmente
-                                "MiCumple",
-                                "14/11/2023",
-                                "00:00",
-                                "Fiesta",
-                                "24 horas",
-                                True
+            contenido = list(contenido) #Transformo a lista el objeto csv.reader 
+            titulo , fecha, hora, desc, dura, impo = self.titulo_var.get(), self.fecha_var.get(),self.hora_var.get(),self.descripcion_var.get(),self.duracion.get(),self.importancia_var.get()
+            contenido[pos_mod]=[ #No logro traer lo que el usuario coloca en las boxtext 
+                                titulo,
+                                fecha,
+                                hora,
+                                desc,
+                                dura,
+                                impo
                                 ]
-            print("****************************************************************")
-            print(contenido[pos_mod])
-            print("****************************************************************")
+            # contenido[pos_mod]=[ #uso esto para ver que el metodo funcione osea lo seteo manualmente
+            #                     "MiCumple",
+            #                     "14/11/2023",
+            #                     "00:00",
+            #                     "Fiesta",
+            #                     "24 horas",
+            #                     True
+            #                     ]
             
         with open("eventos.csv","w",newline="") as f:#reabro el archivo para escribir todo el contenido en el archivo
             escritor=csv.writer(f)
             escritor.writerows(contenido)
         messagebox.showinfo("Información", "Evento modificado correctamente")
-        print("****************************************************************")  
-        print("El archivos eventos.csv se modifico.")
-        print("****************************************************************")
     
     #Buscar Modificado Cristian 
     def buscar_evento(self):
