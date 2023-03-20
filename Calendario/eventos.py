@@ -153,14 +153,31 @@ class Evento:
             contenido=list(contenido)#Transformo a lista el objeto csv.reader
             print(contenido)
             print("****************************************************************")
-            contenido[pos_mod]=[#uso esto para ver que el metodo funcione osea lo seteo manualmente
-                                "MiCumple",
-                                "14/11/2023",
-                                "00:00",
-                                "Fiesta",
-                                "24 horas",
-                                True
+
+            Titulo= self.titulo_var.get()
+            Fecha=self.fecha_var.get()
+            Hora=self.hora_var.get()
+            Desc=self.descripcion_var.get()
+            Duracion= self.duracion.get()
+            Importancia= self.importancia_var.get()
+
+            contenido[pos_mod]=[
+                                Titulo,
+                                Fecha,
+                                Hora,
+                                Desc,
+                                Duracion,
+                                Importancia
                                 ]
+            
+            # contenido[pos_mod]=[#uso esto para ver que el metodo funcione osea lo seteo manualmente
+            #                     "MiCumple",
+            #                     "14/11/2023",
+            #                     "00:00",
+            #                     "Fiesta",
+            #                     "24 horas",
+            #                     True
+            #                     ]
             print("****************************************************************")
             print(contenido[pos_mod])
             print("****************************************************************")
