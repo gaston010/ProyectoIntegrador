@@ -86,13 +86,13 @@ class Evento:
         # Crear botones
         btnguardar =  tk.Button(root, text="Crear Nuevo Evento", command=self.guardar)
         btnguardar.grid(row=6, column=0)
-       # btnguardar.bind("<Return>", self.guardar())
+        
         tk.Button(root, text="Modificar", command=self.modificar).grid(row=7, column=0)
         tk.Button(root, text="Eliminar evento", command=self.eliminar_evento).grid(row=6, column=2)
         tk.Button(root, text="Buscar", command=self.buscar_evento).grid(row=1, column=3)
-        cerrar = tk.Button(root, text="Cerrar", command=root.destroy)
+
+        cerrar = tk.Button(root, text="Cerrar", command=root.destroy) 
         cerrar.grid(row=7, column=2)
-        cerrar.bind("<Escape>")
 
 # FUNCIONAL NO TOCAR
     def eliminar_evento(self):
@@ -103,7 +103,6 @@ class Evento:
             messagebox.showwarning("Error", "El título es obligatorio use el boton buscar")
             return
         else:
-
             # Leer los eventos desde el archivo CSV
             eventos = []
             with open("eventos.csv", newline="") as archivo:
@@ -111,7 +110,6 @@ class Evento:
                 for row in contenido:
                     if row[0] != titulo:  # si el título no coincide, agregar el evento a la lista
                         eventos.append(row)
-
             # Escribir los eventos actualizados al archivo CSV
             with open("eventos.csv", "w", newline="") as archivo:
                 contenido = csv.writer(archivo)
@@ -134,13 +132,10 @@ class Evento:
         # genera la hora y le facha actual para poder ser usado dendtro de un ser guardaro y limpie los campos
         fecha_actual = dt.date.today()
         hora_actual = dt.datetime.now().time()
-        
-    
         # Comprueba si el titulo esta vacio
         if self.titulo_var.get() == "":
             messagebox.showwarning("Error", "El título es obligatorio")
             return
-        
         if os.path.exists("eventos.csv"):
             if self.comprobar_hora():
                 messagebox.showwarning("Error", "Contiene evento en el mismo horario")
@@ -163,7 +158,8 @@ class Evento:
                 contenido.writeheader()
             contenido.writerow(data)
             messagebox.showinfo("Información", "Evento guardado correctamente")
-            
+
+            # Limpiar los campos de entrada
             self.titulo_var.set("")
             self.fecha_var.set(fecha_actual.strftime("%d/%m/%Y"))
             self.hora_var.set(hora_actual.strftime("%H:%M"))
@@ -172,7 +168,7 @@ class Evento:
             self.importancia_var.set(False)
             self.titu.focus()
 
-# ! ESTO TRAE TODO LA LISTA TOTAL DE LOS EVENTO NO IMPORT LOS DIA NI LAS FECHAS
+
 # impletarlo con un text area si es que existe
     #ModificarByCristian
     def modificar(self):
@@ -211,7 +207,6 @@ class Evento:
                     return i #retorna la posicion donde se encontro el elemento
             messagebox.showwarning("Error", "No se encontró el evento")
             self.titu.focus()
-            
 
     def comprobar_hora(self):
         fecha_actual = self.fecha_var.get()
@@ -230,6 +225,7 @@ class Evento:
         with open("eventos.csv", newline="") as archivo:
             contenido = csv.reader(archivo)
             contenido = list(contenido)
+            # stackoverflow.com/questions/10695139/sort-a-list-of-tuples-by-2nd-item-integer-value
             contenido.sort(key=lambda x: x[1]) 
             for row in contenido:
                 if row[5] == 'True':
