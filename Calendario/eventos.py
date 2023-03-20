@@ -1,3 +1,4 @@
+from ctypes import sizeof
 import tkinter as tk
 from tkinter import messagebox,ttk
 import csv
@@ -37,7 +38,9 @@ class Evento:
 
         # Crear etiquetas y campos de entrada
         tk.Label(root, text="Título:").grid(row=0, column=0)
-        tk.Entry(root,textvariable=self.titulo_var).grid(row=0, column=1)
+        self.titu = tk.Entry(root,textvariable=self.titulo_var)
+        self.titu.grid(row=0, column=1)
+        self. titu.focus()
         
         tk.Label(root, text="Fecha (DD/MM/AAAA):",).grid(row=1, column=0)
         tk.Entry(root, textvariable=self.fecha_var).grid(row=1, column=1)
@@ -56,13 +59,40 @@ class Evento:
 
         tk.Label(root, text="Buscar Evento:").grid(row=0, column=2)
         tk.Entry(root, textvariable=self.buscar).grid(row=0, column=3)
+        
+        ev=tk.Label(root, text="Eventos:", font="Arial")
+        ev.grid(row=8, column=2)
+        ev.config(font=("Arial", 20))
 
+        #Genera una lista para mostrar los eventos
+        self.arbol = ttk.Treeview(root, columns=("Titulo", "Fecha", "Hora", "Descripcion", "Duracion", "Importancia"))
+        self.arbol.grid(row=9, column=0, columnspan=4)
+        self.arbol.heading("#0", text=" ")
+        self.arbol.heading("Titulo", text="Titulo")
+        self.arbol.heading("Fecha", text="Fecha")
+        self.arbol.heading("Hora", text="Hora")
+        self.arbol.heading("Descripcion", text="Descripcion")
+        self.arbol.heading("Duracion", text="Duracion")
+        self.arbol.heading("Importancia", text="Importancia")
+        self.arbol.column("#0", width=0)
+        self.arbol.column("Titulo", width=100)
+        self.arbol.column("Fecha", width=100)
+        self.arbol.column("Hora", width=100)
+        self.arbol.column("Descripcion", width=100)
+        self.arbol.column("Duracion", width=100)
+        self.arbol.column("Importancia", width=100)
+        self.cargar_eventos() # carga los eventos de forma automatica no hace falta un boton para hacerlo
+        
         # Crear botones
-        tk.Button(root, text="Crear Nuevo Evento", command=self.guardar).grid(row=6, column=0)
+        btnguardar =  tk.Button(root, text="Crear Nuevo Evento", command=self.guardar)
+        btnguardar.grid(row=6, column=0)
+        
         tk.Button(root, text="Modificar", command=self.modificar).grid(row=7, column=0)
         tk.Button(root, text="Eliminar evento", command=self.eliminar_evento).grid(row=6, column=2)
         tk.Button(root, text="Buscar", command=self.buscar_evento).grid(row=1, column=3)
 
+        cerrar = tk.Button(root, text="Cerrar", command=root.destroy) 
+        cerrar.grid(row=7, column=2)
 
 # FUNCIONAL NO TOCAR
     def eliminar_evento(self):
@@ -73,8 +103,6 @@ class Evento:
             messagebox.showwarning("Error", "El título es obligatorio use el boton buscar")
             return
         else:
-
-
             # Leer los eventos desde el archivo CSV
             eventos = []
             with open("eventos.csv", newline="") as archivo:
@@ -82,7 +110,6 @@ class Evento:
                 for row in contenido:
                     if row[0] != titulo:  # si el título no coincide, agregar el evento a la lista
                         eventos.append(row)
-
             # Escribir los eventos actualizados al archivo CSV
             with open("eventos.csv", "w", newline="") as archivo:
                 contenido = csv.writer(archivo)
@@ -97,7 +124,7 @@ class Evento:
             self.descripcion_var.set("")
             self.duracion.set("1 Hora")
             self.importancia_var.set(False)
-            
+            self.titu.focus()
 
 # esto ya anda no TOCAR
     def guardar(self):
@@ -105,13 +132,10 @@ class Evento:
         # genera la hora y le facha actual para poder ser usado dendtro de un ser guardaro y limpie los campos
         fecha_actual = dt.date.today()
         hora_actual = dt.datetime.now().time()
-        
-    
         # Comprueba si el titulo esta vacio
         if self.titulo_var.get() == "":
             messagebox.showwarning("Error", "El título es obligatorio")
             return
-        
         if os.path.exists("eventos.csv"):
             if self.comprobar_hora():
                 messagebox.showwarning("Error", "Contiene evento en el mismo horario")
@@ -134,62 +158,41 @@ class Evento:
                 contenido.writeheader()
             contenido.writerow(data)
             messagebox.showinfo("Información", "Evento guardado correctamente")
-            
+
+            # Limpiar los campos de entrada
             self.titulo_var.set("")
             self.fecha_var.set(fecha_actual.strftime("%d/%m/%Y"))
             self.hora_var.set(hora_actual.strftime("%H:%M"))
             self.descripcion_var.set("")
             self.duracion.set("1 Hora")
             self.importancia_var.set(False)
+            self.titu.focus()
 
-# ! ESTO TRAE TODO LA LISTA TOTAL DE LOS EVENTO NO IMPORT LOS DIA NI LAS FECHAS
+
 # impletarlo con un text area si es que existe
     #ModificarByCristian
     def modificar(self):
         pos_mod = self.buscar_evento()#Esto me devuelve la posicion del buscado
         with open("eventos.csv", "r",newline="") as archivo:
             contenido = csv.reader(archivo)
-            print(contenido)
             contenido=list(contenido)#Transformo a lista el objeto csv.reader
             print(contenido)
             print("****************************************************************")
-
-            Titulo= self.titulo_var.get()
-            Fecha=self.fecha_var.get()
-            Hora=self.hora_var.get()
-            Desc=self.descripcion_var.get()
-            Duracion= self.duracion.get()
-            Importancia= self.importancia_var.get()
-
-            contenido[pos_mod]=[
-                                Titulo,
-                                Fecha,
-                                Hora,
-                                Desc,
-                                Duracion,
-                                Importancia
+            contenido[pos_mod]=[#uso esto para ver que el metodo funcione osea lo seteo manualmente
+                                "MiCumple",
+                                "14/11/2023",
+                                "00:00",
+                                "Fiesta",
+                                "24 horas",
+                                True
                                 ]
-            
-            # contenido[pos_mod]=[#uso esto para ver que el metodo funcione osea lo seteo manualmente
-            #                     "MiCumple",
-            #                     "14/11/2023",
-            #                     "00:00",
-            #                     "Fiesta",
-            #                     "24 horas",
-            #                     True
-            #                     ]
             print("****************************************************************")
             print(contenido[pos_mod])
-            print("****************************************************************")
-            
         with open("eventos.csv","w",newline="") as f:#reabro el archivo para escribir todo el contenido en el archivo
             escritor=csv.writer(f)
             escritor.writerows(contenido)
         messagebox.showinfo("Información", "Evento modificado correctamente")
-        print("****************************************************************")  
-        print("El archivos eventos.csv se modifico.")
-        print("****************************************************************")
-    
+
     #Buscar Modificado Cristian 
     def buscar_evento(self):
         buscado = self.buscar.get()
@@ -206,21 +209,31 @@ class Evento:
                     self.importancia_var.set(False)
                     return i #retorna la posicion donde se encontro el elemento
             messagebox.showwarning("Error", "No se encontró el evento")
+            self.titu.focus()
 
     def comprobar_hora(self):
-        import os
-
         fecha_actual = self.fecha_var.get()
         hora_actual = self.hora_var.get()
-
-        with open("eventos.csv", newline="") as archivo:#modifique "a" para que cree el archivo eventos.csv
+        with open("eventos.csv", newline="") as archivo:
             contenido = csv.reader(archivo)
             for row in contenido:
                 fecha = row[1]
                 hora = row[2]
-
                 if fecha == fecha_actual and hora == hora_actual:
                     return True
             else:
                 return False
 
+    def cargar_eventos(self):
+        with open("eventos.csv", newline="") as archivo:
+            contenido = csv.reader(archivo)
+            contenido = list(contenido)
+            # stackoverflow.com/questions/10695139/sort-a-list-of-tuples-by-2nd-item-integer-value
+            contenido.sort(key=lambda x: x[1]) 
+            for row in contenido:
+                if row[5] == 'True':
+                    tags = ('True',) # añade un tag para el ítem con valor True
+                else:
+                    tags = ()
+                self.arbol.insert("", "end", values=row, tags=tags)
+        self.arbol.tag_configure('True', background='green')
