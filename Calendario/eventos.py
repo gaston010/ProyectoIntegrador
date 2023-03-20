@@ -59,7 +59,7 @@ class Evento:
 
         # Crear botones
         tk.Button(root, text="Crear Nuevo Evento", command=self.guardar).grid(row=6, column=0)
-        tk.Button(root, text="Modificar", command=self.modificar).grid(row=7, column=0)
+        # tk.Button(root, text="Modificar", command=self.modificar).grid(row=7, column=0)
         tk.Button(root, text="Eliminar evento", command=self.eliminar_evento).grid(row=6, column=2)
         tk.Button(root, text="Buscar", command=self.buscar_evento).grid(row=1, column=3)
 
@@ -145,34 +145,25 @@ class Evento:
 # ! ESTO TRAE TODO LA LISTA TOTAL DE LOS EVENTO NO IMPORT LOS DIA NI LAS FECHAS
 # impletarlo con un text area si es que existe
     #ModificarByCristian
-    def modificar(self):
-        pos_mod = self.buscar_evento()#Esto me devuelve la posicion del buscado
-        with open("eventos.csv", "r",newline="") as archivo:
-            contenido = csv.reader(archivo)
-            print(contenido)
-            contenido=list(contenido)#Transformo a lista el objeto csv.reader
-            print(contenido)
-            print("****************************************************************")
-            contenido[pos_mod]=[#uso esto para ver que el metodo funcione osea lo seteo manualmente
-                                "MiCumple",
-                                "14/11/2023",
-                                "00:00",
-                                "Fiesta",
-                                "24 horas",
-                                True
-                                ]
-            print("****************************************************************")
-            print(contenido[pos_mod])
-            print("****************************************************************")
-            
-        with open("eventos.csv","w",newline="") as f:#reabro el archivo para escribir todo el contenido en el archivo
-            escritor=csv.writer(f)
-            escritor.writerows(contenido)
-        messagebox.showinfo("Información", "Evento modificado correctamente")
-        print("****************************************************************")  
-        print("El archivos eventos.csv se modifico.")
-        print("****************************************************************")
-    
+    # def modificar(self):
+    #     pos_mod = self.buscar_evento()#Esto me devuelve la posicion del buscado
+    #     with open("eventos.csv", "r",newline="") as archivo:
+    #         contenido = csv.reader(archivo)
+    #         contenido=list(contenido)#Transformo a lista el objeto csv.reader
+    #         contenido[pos_mod]=[#uso esto para ver que el metodo funcione osea lo seteo manualmente
+    #                             "MiCumple",
+    #                             "14/11/2023",
+    #                             "00:00",
+    #                             "Fiesta",
+    #                             "24 horas",
+    #                             True
+    #                             ]
+    #         print(contenido[pos_mod])
+    #     with open("eventos.csv","w",newline="") as f:#reabro el archivo para escribir todo el contenido en el archivo
+    #         escritor=csv.writer(f)
+    #         escritor.writerows(contenido)
+    #     messagebox.showinfo("Información", "Evento modificado correctamente")
+
     #Buscar Modificado Cristian 
     def buscar_evento(self):
         buscado = self.buscar.get()
