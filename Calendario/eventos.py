@@ -202,4 +202,12 @@ class Evento:
                     return True
             else:
                 return False
+                
+    def cargar_eventos(self):
+        with open("eventos.csv", newline="") as archivo:
+            contenido = csv.reader(archivo)
+            contenido = list(contenido)
+            contenido.sort(key=lambda x: x[1]) # https://es.stackoverflow.com/questions/76439/c%c3%b3mo-puedo-ordenar-una-columna-de-fechas-en-el-orden-del-calendario-usando-pand
+            for row in contenido:
+                self.lado.insert(tk.END, row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[4] + " " + row[5] + "\n")
 
