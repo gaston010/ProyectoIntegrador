@@ -1,6 +1,7 @@
 Titulo,Fecha,Hora,Descripcion,Duracion,Importancia
 MiCumple,14/11/2023,00:00,Fiesta,24 horas,True
-Evento2,19/03/2023,22:10,Desc2,1 Hora,True
-Evento3,19/03/2023,22:11,Desc3,1 Hora,True
-Evento4,20/03/2023,22:12,Desc4,1 Hora,True
-Evento5,25/03/2023,22:11,Desc5,1 Hora,False
+E,v,e,n,t,o,2
+1,9,/,0,3,/,2,0,2,3
+2,2,:,1,0
+D,e,s,c,2
+1, ,H,o,r,a
