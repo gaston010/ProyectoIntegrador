@@ -58,8 +58,25 @@ class Evento:
         tk.Entry(root, textvariable=self.buscar).grid(row=0, column=3)
         
         tk.Label(root, text="Eventos:").grid(row=8, column=0)
-        self.lado = tk.Text(root, width=70, height=8)
-        self.lado.grid(row=9, column=0, columnspan=4)
+        #Genera una lista para mostrar los eventos
+        self.arbol = ttk.Treeview(root, columns=("Titulo", "Fecha", "Hora", "Descripcion", "Duracion", "Importancia"))
+        self.arbol.grid(row=9, column=0, columnspan=4)
+        self.arbol.heading("#0", text=" ")
+        self.arbol.heading("Titulo", text="Titulo")
+        self.arbol.heading("Fecha", text="Fecha")
+        self.arbol.heading("Hora", text="Hora")
+        self.arbol.heading("Descripcion", text="Descripcion")
+        self.arbol.heading("Duracion", text="Duracion")
+        self.arbol.heading("Importancia", text="Importancia")
+        self.arbol.column("#0", width=0)
+        self.arbol.column("Titulo", width=100)
+        self.arbol.column("Fecha", width=100)
+        self.arbol.column("Hora", width=100)
+        self.arbol.column("Descripcion", width=100)
+        self.arbol.column("Duracion", width=100)
+        self.arbol.column("Importancia", width=100)
+        self.cargar_eventos() # carga los eventos de forma automatica no hace falta un boton para hacerlo
+        
         #self.lado.insert(tk.END, "Titulo, Fecha, Hora, Descripcion, Duracion, Importancia\n")
 
         # Crear botones
@@ -67,7 +84,7 @@ class Evento:
         tk.Button(root, text="Modificar", command=self.modificar).grid(row=7, column=0)
         tk.Button(root, text="Eliminar evento", command=self.eliminar_evento).grid(row=6, column=2)
         tk.Button(root, text="Buscar", command=self.buscar_evento).grid(row=1, column=3)
-        tk.Button(root, text="Mostrar Eventos", command=self.cargar_eventos).grid(row=7, column=2)
+      #  tk.Button(root, text="Mostrar Eventos", command=self.cargar_eventos).grid(row=7, column=2)
 
 
 # FUNCIONAL NO TOCAR
@@ -208,7 +225,11 @@ class Evento:
         with open("eventos.csv", newline="") as archivo:
             contenido = csv.reader(archivo)
             contenido = list(contenido)
-            contenido.sort(key=lambda x: x[1]) # https://es.stackoverflow.com/questions/76439/c%c3%b3mo-puedo-ordenar-una-columna-de-fechas-en-el-orden-del-calendario-usando-pand
+            contenido.sort(key=lambda x: x[1]) 
             for row in contenido:
-                self.lado.insert(tk.END, row[0] + " " + row[1] + " " + row[2] + " " + row[3] + " " + row[4] + " " + row[5] + "\n")
-
+                if row[5] == 'True':
+                    tags = ('True',) # añade un tag para el ítem con valor False
+                else:
+                    tags = ()
+                self.arbol.insert("", "end", values=row, tags=tags)
+        self.arbol.tag_configure('True', background='green') # configura el tag para que el fondo sea rojo
