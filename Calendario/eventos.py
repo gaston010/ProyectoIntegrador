@@ -111,33 +111,36 @@ class Evento:
         if self.titulo_var.get() == "":
             messagebox.showwarning("Error", "El título es obligatorio")
             return
-        elif self.comprobar_hora():
-            messagebox.showwarning("Error", "Contiene evento en el mismo horario")
-            return
-        else:
-            data = {
-                    "Titulo":self.titulo_var.get(),
-                    "Fecha":self.fecha_var.get(),
-                    "Hora":self.hora_var.get(),
-                    "Descripcion":self.descripcion_var.get(),
-                    "Duracion":self.duracion.get(),
-                    "Importancia":self.importancia_var.get()
-                    }
-            cabecera = ["Titulo", "Fecha", "Hora", "Descripcion", "Duracion", "Importancia"]
-            archivo_existe= os.path.exists("eventos.csv")
-            with open("eventos.csv", "a", newline="") as archivo:
-                contenido = csv.DictWriter(archivo,fieldnames=cabecera)
-                if not archivo_existe:
-                    contenido.writeheader()
-                contenido.writerow(data)
-                messagebox.showinfo("Información", "Evento guardado correctamente")
-                
-                self.titulo_var.set("")
-                self.fecha_var.set(fecha_actual.strftime("%d/%m/%Y"))
-                self.hora_var.set(hora_actual.strftime("%H:%M"))
-                self.descripcion_var.set("")
-                self.duracion.set("1 Hora")
-                self.importancia_var.set(False)
+        
+        if os.path.exists("eventos.csv"):
+            if self.comprobar_hora():
+                messagebox.showwarning("Error", "Contiene evento en el mismo horario")
+                return
+        #Si pasa los if de arriba el evento puede ser guardado.    
+        data = {
+                "Titulo":self.titulo_var.get(),
+                "Fecha":self.fecha_var.get(),
+                "Hora":self.hora_var.get(),
+                "Descripcion":self.descripcion_var.get(),
+                "Duracion":self.duracion.get(),
+                "Importancia":self.importancia_var.get()
+                }
+        cabecera = ["Titulo", "Fecha", "Hora", "Descripcion", "Duracion", "Importancia"]
+        archivo_existe= os.path.exists("eventos.csv")
+        print(archivo_existe)
+        with open("eventos.csv", "a", newline="") as archivo:
+            contenido = csv.DictWriter(archivo,fieldnames=cabecera)
+            if os.path.getsize("eventos.csv") == 0:#pregunta si el archivo pesa 0
+                contenido.writeheader()
+            contenido.writerow(data)
+            messagebox.showinfo("Información", "Evento guardado correctamente")
+            
+            self.titulo_var.set("")
+            self.fecha_var.set(fecha_actual.strftime("%d/%m/%Y"))
+            self.hora_var.set(hora_actual.strftime("%H:%M"))
+            self.descripcion_var.set("")
+            self.duracion.set("1 Hora")
+            self.importancia_var.set(False)
 
 # ! ESTO TRAE TODO LA LISTA TOTAL DE LOS EVENTO NO IMPORT LOS DIA NI LAS FECHAS
 # impletarlo con un text area si es que existe
@@ -175,14 +178,14 @@ class Evento:
         fecha_actual = self.fecha_var.get()
         hora_actual = self.hora_var.get()
 
-        with open("eventos.csv","a", newline="") as archivo:#modifique "a" para que cree el archivo eventos.csv
+        with open("eventos.csv", newline="") as archivo:#modifique "a" para que cree el archivo eventos.csv
             contenido = csv.reader(archivo)
-            if not os.path.getsize("eventos.csv") == 0:#pregunta si el tamaño del archivo no es 0.
-                for row in contenido:
-                    fecha = row[1]
-                    hora = row[2]
+            for row in contenido:
+                fecha = row[1]
+                hora = row[2]
 
-                    if fecha == fecha_actual and hora == hora_actual:
-                        return True
+                if fecha == fecha_actual and hora == hora_actual:
+                    return True
             else:
                 return False
+

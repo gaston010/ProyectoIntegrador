@@ -1,1 +1,4 @@
-Evento1,19/03/2023,19:40,Descripcion1,1 hora,True
+Titulo,Fecha,Hora,Descripcion,Duracion,Importancia
+Evento1,19/03/2023,20:58,Desc1,1 hora,True
+Evento2,19/03/2023,21:00,Desc2,1 Hora,True
+Evento3,22/03/2023,20:58,Desc3,1 Hora,False
