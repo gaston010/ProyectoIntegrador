@@ -56,6 +56,11 @@ class Evento:
 
         tk.Label(root, text="Buscar Evento:").grid(row=0, column=2)
         tk.Entry(root, textvariable=self.buscar).grid(row=0, column=3)
+        
+        tk.Label(root, text="Eventos:").grid(row=8, column=0)
+        self.lado = tk.Text(root, width=70, height=8)
+        self.lado.grid(row=9, column=0, columnspan=4)
+        self.lado.insert(tk.END, "Titulo, Fecha, Hora, Descripcion, Duracion, Importancia\n")
 
         # Crear botones
         tk.Button(root, text="Crear Nuevo Evento", command=self.guardar).grid(row=6, column=0)
