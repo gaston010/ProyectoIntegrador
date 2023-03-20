@@ -1,3 +1,4 @@
+from ctypes import sizeof
 import tkinter as tk
 from tkinter import messagebox,ttk
 import csv
@@ -37,7 +38,9 @@ class Evento:
 
         # Crear etiquetas y campos de entrada
         tk.Label(root, text="Título:").grid(row=0, column=0)
-        tk.Entry(root,textvariable=self.titulo_var).grid(row=0, column=1)
+        self.titu = tk.Entry(root,textvariable=self.titulo_var)
+        self.titu.grid(row=0, column=1)
+        self. titu.focus()
         
         tk.Label(root, text="Fecha (DD/MM/AAAA):",).grid(row=1, column=0)
         tk.Entry(root, textvariable=self.fecha_var).grid(row=1, column=1)
@@ -57,7 +60,10 @@ class Evento:
         tk.Label(root, text="Buscar Evento:").grid(row=0, column=2)
         tk.Entry(root, textvariable=self.buscar).grid(row=0, column=3)
         
-        tk.Label(root, text="Eventos:").grid(row=8, column=0)
+        ev=tk.Label(root, text="Eventos:", font="Arial")
+        ev.grid(row=8, column=2)
+        ev.config(font=("Arial", 20))
+
         #Genera una lista para mostrar los eventos
         self.arbol = ttk.Treeview(root, columns=("Titulo", "Fecha", "Hora", "Descripcion", "Duracion", "Importancia"))
         self.arbol.grid(row=9, column=0, columnspan=4)
@@ -77,15 +83,16 @@ class Evento:
         self.arbol.column("Importancia", width=100)
         self.cargar_eventos() # carga los eventos de forma automatica no hace falta un boton para hacerlo
         
-        #self.lado.insert(tk.END, "Titulo, Fecha, Hora, Descripcion, Duracion, Importancia\n")
-
         # Crear botones
-        tk.Button(root, text="Crear Nuevo Evento", command=self.guardar).grid(row=6, column=0)
+        btnguardar =  tk.Button(root, text="Crear Nuevo Evento", command=self.guardar)
+        btnguardar.grid(row=6, column=0)
+       # btnguardar.bind("<Return>", self.guardar())
         tk.Button(root, text="Modificar", command=self.modificar).grid(row=7, column=0)
         tk.Button(root, text="Eliminar evento", command=self.eliminar_evento).grid(row=6, column=2)
         tk.Button(root, text="Buscar", command=self.buscar_evento).grid(row=1, column=3)
-      #  tk.Button(root, text="Mostrar Eventos", command=self.cargar_eventos).grid(row=7, column=2)
-
+        cerrar = tk.Button(root, text="Cerrar", command=root.destroy)
+        cerrar.grid(row=7, column=2)
+        cerrar.bind("<Escape>")
 
 # FUNCIONAL NO TOCAR
     def eliminar_evento(self):
@@ -96,7 +103,6 @@ class Evento:
             messagebox.showwarning("Error", "El título es obligatorio use el boton buscar")
             return
         else:
-
 
             # Leer los eventos desde el archivo CSV
             eventos = []
@@ -120,7 +126,7 @@ class Evento:
             self.descripcion_var.set("")
             self.duracion.set("1 Hora")
             self.importancia_var.set(False)
-            
+            self.titu.focus()
 
 # esto ya anda no TOCAR
     def guardar(self):
@@ -164,6 +170,7 @@ class Evento:
             self.descripcion_var.set("")
             self.duracion.set("1 Hora")
             self.importancia_var.set(False)
+            self.titu.focus()
 
 # ! ESTO TRAE TODO LA LISTA TOTAL DE LOS EVENTO NO IMPORT LOS DIA NI LAS FECHAS
 # impletarlo con un text area si es que existe
@@ -203,19 +210,17 @@ class Evento:
                     self.importancia_var.set(False)
                     return i #retorna la posicion donde se encontro el elemento
             messagebox.showwarning("Error", "No se encontró el evento")
+            self.titu.focus()
+            
 
     def comprobar_hora(self):
-        import os
-
         fecha_actual = self.fecha_var.get()
         hora_actual = self.hora_var.get()
-
-        with open("eventos.csv", newline="") as archivo:#modifique "a" para que cree el archivo eventos.csv
+        with open("eventos.csv", newline="") as archivo:
             contenido = csv.reader(archivo)
             for row in contenido:
                 fecha = row[1]
                 hora = row[2]
-
                 if fecha == fecha_actual and hora == hora_actual:
                     return True
             else:
@@ -228,8 +233,8 @@ class Evento:
             contenido.sort(key=lambda x: x[1]) 
             for row in contenido:
                 if row[5] == 'True':
-                    tags = ('True',) # añade un tag para el ítem con valor False
+                    tags = ('True',) # añade un tag para el ítem con valor True
                 else:
                     tags = ()
                 self.arbol.insert("", "end", values=row, tags=tags)
-        self.arbol.tag_configure('True', background='green') # configura el tag para que el fondo sea rojo
+        self.arbol.tag_configure('True', background='green')
