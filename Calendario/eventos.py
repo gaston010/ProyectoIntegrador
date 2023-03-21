@@ -181,7 +181,8 @@ class Evento:
         importancia= self.importancia_var.get()
 
         pos_mod = self.buscar_evento()#Esto me devuelve la posicion del buscado
-        filas=[]
+        filas=[]#aqui guardamos todo el nuevo contenido
+        #trae todo en contenido y modifica la posicion obtenida en pos_mod 
         with open("eventos.csv", "r",newline="") as archivo:
             contenido = csv.reader(archivo)
             for i,fila in enumerate(contenido):
@@ -195,7 +196,7 @@ class Evento:
                             importancia
                             ]
                 filas.append(fila)
-        
+        #Escribe el archivo con la nueva modificacion
         with open("eventos.csv","w",newline="") as archivo:
             escritor_csv= csv.writer(archivo)
             for fila in filas:
