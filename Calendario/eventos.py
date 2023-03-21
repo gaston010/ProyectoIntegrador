@@ -81,7 +81,8 @@ class Evento:
         self.arbol.column("Descripcion", width=100)
         self.arbol.column("Duracion", width=100)
         self.arbol.column("Importancia", width=100)
-        self.cargar_eventos() # carga los eventos de forma automatica no hace falta un boton para hacerlo
+        if os.path.exists("eventos.csv"):
+            self.cargar_eventos()
         
         # Crear botones
         btnguardar =  tk.Button(root, text="Crear Nuevo Evento", command=self.guardar)
