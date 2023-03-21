@@ -129,19 +129,20 @@ class Evento:
 
 # esto ya anda no TOCAR
     def guardar(self):
-        import os
+        import os # importa os para comprar si el archivo si existe o no
         # genera la hora y le facha actual para poder ser usado dendtro de un ser guardaro y limpie los campos
-        fecha_actual = dt.date.today()
+        fecha_actual = dt.date.today() 
         hora_actual = dt.datetime.now().time()
         # Comprueba si el titulo esta vacio
         if self.titulo_var.get() == "":
             messagebox.showwarning("Error", "El título es obligatorio")
             return
-        if os.path.exists("eventos.csv"):
+        if os.path.exists("eventos.csv"): # si el archivo existe comprueba
             if self.comprobar_hora():
                 messagebox.showwarning("Error", "Contiene evento en el mismo horario")
                 return
-        #Si pasa los if de arriba el evento puede ser guardado.    
+        #Si pasa los if de arriba el evento puede ser guardado.  
+        # Genera un diccionario con los datos del evento que los obtiene dentro de los entry   
         data = {
                 "Titulo":self.titulo_var.get(),
                 "Fecha":self.fecha_var.get(),
@@ -150,6 +151,7 @@ class Evento:
                 "Duracion":self.duracion.get(),
                 "Importancia":self.importancia_var.get()
                 }
+        # Genera una lista con los nombres de las columnas
         cabecera = ["Titulo", "Fecha", "Hora", "Descripcion", "Duracion", "Importancia"]
         archivo_existe= os.path.exists("eventos.csv")
         print(archivo_existe)
