@@ -2,6 +2,7 @@ from ctypes import sizeof
 import tkinter as tk
 from tkinter import messagebox,ttk
 import csv
+import os
 import datetime as dt
 
 class Evento:
@@ -10,7 +11,7 @@ class Evento:
     def __init__(self, root):
         self.root = root
         root.title("Formulario de eventos")
-        self.root.geometry("550x350")
+        self.root.geometry("600x500")
 
         # Definir variables de control
         self.titulo_var = tk.StringVar()
