@@ -239,6 +239,7 @@ class Evento:
         with open("eventos.csv", newline="") as archivo:
             contenido = csv.reader(archivo)
             contenido = list(contenido)
+            contenido.pop(0)#Esto elimina de la lista contenido a la primer fila que es la cabecera
             # stackoverflow.com/questions/10695139/sort-a-list-of-tuples-by-2nd-item-integer-value
             contenido.sort(key=lambda x: x[1]) 
             for row in contenido:
