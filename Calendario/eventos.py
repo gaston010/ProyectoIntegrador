@@ -177,6 +177,8 @@ class Evento:
         with open("eventos.csv", "r",newline="") as archivo:
             contenido = csv.reader(archivo)
             contenido=list(contenido)#Transformo a lista el objeto csv.reader
+            print(contenido)
+            print("****************************************************************")
             contenido[pos_mod]=[#uso esto para ver que el metodo funcione osea lo seteo manualmente
                                 "MiCumple",
                                 "14/11/2023",
@@ -185,6 +187,7 @@ class Evento:
                                 "24 horas",
                                 True
                                 ]
+            print("****************************************************************")
             print(contenido[pos_mod])
         with open("eventos.csv","w",newline="") as f:#reabro el archivo para escribir todo el contenido en el archivo
             escritor=csv.writer(f)
