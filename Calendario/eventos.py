@@ -170,6 +170,7 @@ class Evento:
             self.duracion.set("1 Hora")
             self.importancia_var.set(False)
             self.titu.focus()
+            self.arbol.update()
 
 
 # impletarlo con un text area si es que existe
@@ -181,6 +182,7 @@ class Evento:
         descripcion= self.descripcion_var.get()
         duracion=self.duracion.get()
         importancia= self.importancia_var.get()
+        
 
         pos_mod = self.buscar_evento()#Esto me devuelve la posicion del buscado
         filas=[]#aqui guardamos todo el nuevo contenido
@@ -203,6 +205,7 @@ class Evento:
             escritor_csv= csv.writer(archivo)
             for fila in filas:
                 escritor_csv.writerow(fila)
+                self.arbol.update() # actualiza el arbol
 
         messagebox.showinfo("Información", "Evento modificado correctamente")
 
@@ -223,6 +226,7 @@ class Evento:
                     return i #retorna la posicion donde se encontro el elemento
             messagebox.showwarning("Error", "No se encontró el evento")
             self.titu.focus()
+            self.arbol.update() # actualiza el arbol
 
     def comprobar_hora(self):
         fecha_actual = self.fecha_var.get()
@@ -250,3 +254,4 @@ class Evento:
                     tags = ()
                 self.arbol.insert("", "end", values=row, tags=tags)
         self.arbol.tag_configure('True', background='green')
+        self.arbol.update() # actualiza el arbol
