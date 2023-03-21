@@ -173,26 +173,48 @@ class Evento:
 # impletarlo con un text area si es que existe
     #ModificarByCristian
     def modificar(self):
+        titulo= self.titulo_var.get()
+        fecha= self.fecha_var.get()
+        hora=self.hora_var.get()
+        descripcion= self.descripcion_var.get()
+        duracion=self.duracion.get()
+        importancia= self.importancia_var.get()
+
         pos_mod = self.buscar_evento()#Esto me devuelve la posicion del buscado
+        filas=[]
         with open("eventos.csv", "r",newline="") as archivo:
             contenido = csv.reader(archivo)
-            contenido=list(contenido)#Transformo a lista el objeto csv.reader
-            print(contenido)
-            print("****************************************************************")
-            contenido[pos_mod]=[#uso esto para ver que el metodo funcione osea lo seteo manualmente
-                                "MiCumple",
-                                "14/11/2023",
-                                "00:00",
-                                "Fiesta",
-                                "24 horas",
-                                True
-                                ]
-            print("****************************************************************")
-            print(contenido[pos_mod])
-        with open("eventos.csv","w",newline="") as f:#reabro el archivo para escribir todo el contenido en el archivo
-            escritor=csv.writer(f)
-            escritor.writerows(contenido)
+            for i,fila in enumerate(contenido):
+                if i==pos_mod:
+                    fila= [
+                            titulo,
+                            fecha,
+                            hora,
+                            descripcion,
+                            duracion,
+                            importancia
+                            ]
+                filas.append(fila)
+        
+        with open("eventos.csv","w",newline="") as archivo:
+            escritor_csv= csv.writer(archivo)
+            for fila in filas:
+                escritor_csv.writerow(fila)
+
         messagebox.showinfo("Información", "Evento modificado correctamente")
+        
+        #     contenido=list(contenido)#Transformo a lista el objeto csv.reader
+        #     contenido[pos_mod]=[#uso esto para ver que el metodo funcione osea lo seteo manualmente
+        #                         "MiCumple",
+        #                         "14/11/2023",
+        #                         "00:00",
+        #                         "Fiesta",
+        #                         "24 horas",
+        #                         True
+        #                         ]
+        # with open("eventos.csv","w",newline="") as f:#reabro el archivo para escribir todo el contenido en el archivo
+        #     escritor=csv.writer(f)
+        #     escritor.writerows(contenido)
 
     #Buscar Modificado Cristian 
     def buscar_evento(self):
