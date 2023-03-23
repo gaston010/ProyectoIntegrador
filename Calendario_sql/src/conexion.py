@@ -27,18 +27,17 @@ class Conexion:
         self.conexion.commit()
         self.desconectar()
 
-    def borrar(self, id):
+    def borrar(self, nombre):
         self.conectar()
-        self.cursor.execute("DELETE FROM Eventos WHERE id = ?", (id,))
+        self.cursor.execute("DELETE FROM Eventos WHERE nombre  = ?", (nombre,))
         self.conexion.commit()
         self.desconectar()
 
-    def actualizar(self, id, nombre, fecha, hora, descripcion, importancia):
+    def actualizar(self, remplzar, nombre):
         self.conectar()
-        self.cursor.execute("UPDATE Eventos SET nombre = ?, fecha = ?, hora = ?, descripcion = ?, importancia = ? WHERE id = ?", (nombre, fecha, hora, descripcion, importancia, id))
+        self.update = "UPDATE Eventos SET Nombre = ?, WHERE Nombre = ?",(remplzar, nombre)
         self.conexion.commit()
         self.desconectar()
 
-Conexion().tabla()
 
-Conexion().insertar("Prueba", "2020-12-12", "12:00", "Prueba de inserción", True)
+Conexion().actualizar("Cena", "Comer")
