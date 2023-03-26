@@ -14,6 +14,7 @@ class Evento():
         self.root = root
         root.title("Formulario de eventos")
         self.root.geometry("600x500")
+        self.conexion= con.Conexion()
 
         # Definir variables de control
         self.titulo_var = tk.StringVar()
@@ -89,8 +90,9 @@ class Evento():
         self.arbol.column("Descripcion", width=100)
         self.arbol.column("Duracion", width=100)
         self.arbol.column("Importancia", width=100)
-        if os.path.exists("eventos.csv"):
+        if con.Conexion():
             self.cargar_eventos()
+            self.arbol.update()
         
         # Crear botones
         btnguardar =  tk.Button(root, text="Crear Nuevo Evento", command=self.guardar)
@@ -106,38 +108,25 @@ class Evento():
 # FUNCIONAL NO TOCAR
     def eliminar_evento(self):
         # Obtener el título del evento a eliminar
-        titulo = self.titulo_var.get()
 
-        if titulo == "":
-            messagebox.showwarning("Error", "El título es obligatorio use el boton buscar")
+        if not self.titulo_var.get():
+            messagebox.showwarning("Error", "El título es obligatorio")
             return
-        else:
-            # Leer los eventos desde el archivo CSV
-            eventos = []
-            with open("eventos.csv", newline="") as archivo:
-                contenido = csv.reader(archivo)
-                for row in contenido:
-                    if row[0] != titulo:  # si el título no coincide, agregar el evento a la lista
-                        eventos.append(row)
-            # Escribir los eventos actualizados al archivo CSV
-            with open("eventos.csv", "w", newline="") as archivo:
-                contenido = csv.writer(archivo)
-                contenido.writerows(eventos)
 
-            # Limpiar los campos de entrada
-            fecha_actual = dt.date.today()
-            hora_actual = dt.datetime.now().time()
-            self.titulo_var.set("")
-            self.fecha_var.set(fecha_actual.strftime("%Y/%m/%d"))
-            self.hora_var.set(hora_actual.strftime("%H:%M"))
-            self.descripcion_var.set("")
-            self.duracion.set("1 Hora")
-            self.importancia_var.set(False)
-            self.titu.focus()
+        con.Conexion().eliminar(self.titulo_var.get())
+        # Limpiar los campos de entrada
+        fecha_actual = dt.date.today()
+        hora_actual = dt.datetime.now().time()
+        self.titulo_var.set("")
+        self.fecha_var.set(fecha_actual.strftime("%Y/%m/%d"))
+        self.hora_var.set(hora_actual.strftime("%H:%M"))
+        self.descripcion_var.set("")
+        self.duracion.set("1 Hora")
+        self.importancia_var.set(False)
+        self.titu.focus()
 
 
     def guardar(self):
-        import os
         import datetime
 
         # Verificar si el título está vacío
@@ -171,65 +160,40 @@ class Evento():
         self.arbol.update()
 
 
-
-# impletarlo con un text area si es que existe
     #ModificarByCristian
     def modificar(self):
-        titulo= self.titulo_var.get()
-        fecha= self.fecha_var.get()
-        hora=self.hora_var.get()
-        descripcion= self.descripcion_var.get()
-        duracion=self.duracion.get()
-        importancia= self.importancia_var.get()
-        
-
-        pos_mod = self.buscar_evento()#Esto me devuelve la posicion del buscado
-        filas=[]#aqui guardamos todo el nuevo contenido
-        #trae todo en contenido y modifica la posicion obtenida en pos_mod 
-        with open("eventos.csv", "r",newline="") as archivo:
-            contenido = csv.reader(archivo)
-            for i,fila in enumerate(contenido):
-                if i==pos_mod:
-                    fila= [
-                            titulo,
-                            fecha,
-                            hora,
-                            descripcion,
-                            duracion,
-                            importancia
-                            ]
-                filas.append(fila)
-        #Escribe el archivo con la nueva modificacion
-        with open("eventos.csv","w",newline="") as archivo:
-            escritor_csv= csv.writer(archivo)
-            for fila in filas:
-                escritor_csv.writerow(fila)
-                self.arbol.update() # actualiza el arbol
-
+        # Obtener los valores de los campos de entrada
+        titulo = self.titulo_var.get()
+        descripcion = self.descripcion_var.get()
+        duracion = self.duracion.get()
+        # Actualizar el evento en la base de datos
+        con.Conexion().actualizar(titulo, descripcion, duracion)
         messagebox.showinfo("Información", "Evento modificado correctamente")
 
-    #Buscar Modificado Cristian 
+# Buscar por ahora funciona 26/03/2023 00:56 Sabado noche /Domingo Madrugrada 
     def buscar_evento(self):
-            # Obtener el título del evento a buscar
-            title = self.titulo_var.get()
-            buscar = con.Conexion().buscar(title)
-            if buscar:
-                # Si se encontraron resultados, vaciar los campos antes de rellenarlos
-                self.titulo_var.set("")
-                self.fecha_var.set("")
-                self.hora_var.set("")
-                self.descripcion_var.set("")
-                self.duracion.set("")
-                self.importancia_var.set(False)
-                # Recorrer los resultados y rellenar los campos
-                for i in buscar:
-                    self.titulo_var.set(str(i[0]))
-                    self.fecha_var.set(str(i[1]))
-                    self.hora_var.set(str(i[2]))
-                    self.descripcion_var.set(str(i[3]))
-                    self.duracion.set(str(i[4]))
-            else:
-                messagebox.showwarning("Error", "No se encontraron resultados")
+        # Depurar la consulta SQL
+        buscar = self.conexion.buscar(self.buscar.get())
+        if buscar:
+            # Si se encontraron resultados, vaciar los campos antes de rellenarlos
+            self.titulo_var.set("")
+            self.fecha_var.set("")
+            self.hora_var.set("")
+            self.descripcion_var.set("")
+            self.duracion.set("")
+            self.importancia_var.set(False)
+            # Recorrer los resultados y rellenar los campos
+            for i in buscar:
+                # cambia todo los valors a str por que no se puede escribir en el entry no entender por que =¡ 
+                # TODO: Buscar mas info
+                self.titulo_var.set(str(i[0]))
+                self.fecha_var.set(str(i[1]))
+                self.hora_var.set(str(i[2]))
+                self.descripcion_var.set(str(i[3]))
+                self.duracion.set(str(i[4]))
+                self.importancia_var.set(bool(i[5])) # <-- Cambia los valores a booleano para poder escribirlos en el checkbox
+        else:
+            messagebox.showwarning("Error", "No se encontraron resultados")
 
 
     def comprobar_hora(self):
@@ -246,9 +210,8 @@ class Evento():
 
 
     def cargar_eventos(self):
-        buscar = con.Conexion().buscartodo()
-        if buscar:
-            for row in buscar:
+        if con.Conexion().buscartodo():
+            for row in con.Conexion().buscartodo():
                 if row[5] == 1:
                     tags = ('1',)
                 else:
