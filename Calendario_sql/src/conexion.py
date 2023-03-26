@@ -1,5 +1,3 @@
-import sqlite3 as sql
-import datetime as dt
 import mysql.connector as mysql
 
 class Conexion:
@@ -14,8 +12,8 @@ class Conexion:
         )
             self.cursor = self.conexion.cursor()
             print(f"Conectado a la base de datos", self.conexion.database) # muestra el nombre dela db
-        except sql.Error as e:
-            print("No se puede conectar")
+        except mysql.Error as e:
+            print("No se puede conectar", e)
 
     def buscar(self, nombre):
         sql = f"SELECT * FROM eventos WHERE nombre LIKE '%{nombre}%'"
@@ -48,13 +46,14 @@ class Conexion:
 
 
     def actualizar(self, *datos):
-        sql = "UPDATE eventos SET nombre = %s, descripcion = %s, duracion %s  WHERE nombre = %s"
+        sql = "UPDATE eventos SET nombre = %s, descripcion = %s, duracion = %s WHERE nombre = %s"
         try:
             self.cursor.execute(sql, datos)
             self.conexion.commit()
             print("Datos actualizados")
         except Exception as e:
             print("Error al actualizar", e)
+
 
     def buscartodo(self):
         sql = "SELECT * FROM eventos"
@@ -88,3 +87,5 @@ class Conexion:
         except Exception  as e:
             print("Error al buscar", e)
             return []
+
+# Conexion().actualizar("Nuevo", "Evento", "1", "Venta")

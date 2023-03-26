@@ -1,10 +1,6 @@
-import csv
-from ctypes import sizeof
 import datetime as dt
-import os
 import tkinter as tk
 from tkinter import messagebox, ttk, END
-
 import src.conexion as con
 
 class Evento():
@@ -90,7 +86,7 @@ class Evento():
         self.arbol.column("Descripcion", width=100)
         self.arbol.column("Duracion", width=100)
         self.arbol.column("Importancia", width=100)
-        if con.Conexion():
+        if self.conexion:
             self.cargar_eventos()
             self.arbol.update()
         
@@ -113,7 +109,7 @@ class Evento():
             messagebox.showwarning("Error", "El título es obligatorio")
             return
 
-        con.Conexion().eliminar(self.titulo_var.get())
+        self.conexion.eliminar(self.titulo_var.get())
         # Limpiar los campos de entrada
         fecha_actual = dt.date.today()
         hora_actual = dt.datetime.now().time()
@@ -135,7 +131,7 @@ class Evento():
             return
 
         # Verificar si el título ya existe en la base de datos
-        if con.Conexion().buscar(self.titulo_var.get()):
+        if self.conexion.buscar(self.titulo_var.get()):
             messagebox.showwarning("Error", "El título ya existe")
             return
 
@@ -146,7 +142,7 @@ class Evento():
         descripcion = self.descripcion_var.get()
         duracion = self.duracion.get()
         importancia = self.importancia_var.get()
-        con.Conexion().insertar(titulo, fecha, hora, descripcion, duracion, importancia)
+        self.conexion.insertar(titulo, fecha, hora, descripcion, duracion, importancia)
         messagebox.showinfo("Información", "Evento guardado correctamente")
 
         # Limpiar los campos de entrada
@@ -163,11 +159,13 @@ class Evento():
     #ModificarByCristian
     def modificar(self):
         # Obtener los valores de los campos de entrada
-        titulo = self.titulo_var.get()
+        if not self.titulo_var.get():
+            messagebox.showwarning("Error", "El título es obligatorio")
+            return
         descripcion = self.descripcion_var.get()
         duracion = self.duracion.get()
         # Actualizar el evento en la base de datos
-        con.Conexion().actualizar(titulo, descripcion, duracion)
+        self.conexion.actualizar(self.titulo_var.get(), descripcion, duracion,self.titulo_var.get())
         messagebox.showinfo("Información", "Evento modificado correctamente")
 
 # Buscar por ahora funciona 26/03/2023 00:56 Sabado noche /Domingo Madrugrada 
@@ -199,7 +197,7 @@ class Evento():
     def comprobar_hora(self):
         fecha_actual = self.fecha_var.get()
         hora_actual = self.hora_var.get()
-        hora = con.Conexion().buscarhora(hora_actual)
+        hora = self.conexion.buscarhora(hora_actual)
             
         if hora == hora_actual:
             for row in hora:
@@ -210,8 +208,8 @@ class Evento():
 
 
     def cargar_eventos(self):
-        if con.Conexion().buscartodo():
-            for row in con.Conexion().buscartodo():
+        if self.conexion.buscartodo():
+            for row in self.conexion.buscartodo():
                 if row[5] == 1:
                     tags = ('1',)
                 else:
