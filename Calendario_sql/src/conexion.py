@@ -88,4 +88,3 @@ class Conexion:
         except Exception  as e:
             print("Error al buscar", e)
             return []
-
