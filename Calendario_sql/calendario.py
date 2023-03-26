@@ -1,8 +1,7 @@
 import tkinter as tk
-from tkinter import Event, ttk
 import calendar
 from eventos import Evento
-import src.conexion as con
+
 
 
 
@@ -14,7 +13,6 @@ class Calendario(tk.Frame, Evento):
         self.root.title("Calendario")
         self.root.geometry("800x600")
         #self.root.resizable(False, False)
-        self.conexion = con.Conexion()   # conexion a la DB, por comodidad lo manejo de esta forma :D
 
         # obtener el mes y el año actual
         self.año_actual = 2023 # ejemplo
