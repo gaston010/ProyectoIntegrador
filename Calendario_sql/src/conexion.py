@@ -78,4 +78,15 @@ class Conexion:
         except Exception  as e:
             print("Error al buscar", e)
             return []
+    
+    def buscarfecha(self,fecha):
+        sql = f"SELECT * FROM eventos WHERE fecha LIKE '%{fecha}%'"
+        try:
+            self.cursor.execute(sql)
+            resultado = self.cursor.fetchall()
+            resultado = list(resultado)
+            return resultado
+        except Exception  as e:
+            print("Error al buscar", e)
+            return []
 
