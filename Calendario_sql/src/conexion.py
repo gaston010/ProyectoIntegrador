@@ -48,7 +48,6 @@ class Conexion:
             print("Error al eliminar", e)
 
 
-    
     def actualizar(self, *datos):
         sql = "UPDATE eventos SET nombre = %s, descripcion = %s, duracion %s  WHERE nombre = %s"
         try:
