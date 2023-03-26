@@ -17,7 +17,6 @@ class Conexion:
         except sql.Error as e:
             print("No se puede conectar")
 
-    
     def buscar(self, nombre):
         sql = f"SELECT * FROM eventos WHERE nombre LIKE '%{nombre}%'"
         try:
