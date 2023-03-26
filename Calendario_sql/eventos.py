@@ -28,7 +28,7 @@ class Evento():
 
         # obtener la fecha y la hora actual
         fecha_actual = dt.date.today()
-        self.fecha_var.set(fecha_actual.strftime("%Y/%m/%d"))
+        self.fecha_var.set(fecha_actual.strftime("%Y-%m-%d"))
 
         hora_actual = dt.datetime.now().time()
         self.hora_var.set(hora_actual.strftime("%H:%M"))
@@ -158,19 +158,23 @@ class Evento():
 
     #ModificarByCristian
     def modificar(self):
-        # Obtener los valores de los campos de entrada
+    # Obtener los valores de los campos de entrada
         if not self.titulo_var.get():
             messagebox.showwarning("Error", "El título es obligatorio")
             return
-        descripcion = self.descripcion_var.get()
-        duracion = self.duracion.get()
         # Actualizar el evento en la base de datos
-        self.conexion.actualizar(self.titulo_var.get(), descripcion, duracion,self.titulo_var.get())
-        messagebox.showinfo("Información", "Evento modificado correctamente")
+        nuevoTi = self.titulo_var.get()
+        if self.conexion.actualizar(nuevoTi, self.descripcion_var.get(), self.duracion.get(), nuevoTi):
+            messagebox.showinfo("Información", "Evento modificado correctamente")
+        self.arbol.update()
+
 
 # Buscar por ahora funciona 26/03/2023 00:56 Sabado noche /Domingo Madrugrada 
     def buscar_evento(self):
         # Depurar la consulta SQL
+        if not self.buscar.get():
+            messagebox.showwarning("Error", "El título es obligatorio")
+            return
         buscar = self.conexion.buscar(self.buscar.get())
         if buscar:
             # Si se encontraron resultados, vaciar los campos antes de rellenarlos
