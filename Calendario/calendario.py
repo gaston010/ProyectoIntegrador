@@ -1,6 +1,7 @@
+import calendar
 import tkinter as tk
 from tkinter import ttk
-import calendar
+
 from eventos import Evento
 
 
@@ -20,7 +21,6 @@ class Calendario(tk.Frame, Evento):
         self.dia_semana, self.dias_mes = calendar.monthrange(self.año_actual, self.mes_actual)
         self.mes()
 
-
     def mostrar_mes(self):
         # mostrar el mes en la ventana principal
         self.root.title(calendar.month_name[self.mes_actual] + " " + str(self.año_actual))
@@ -34,7 +34,6 @@ class Calendario(tk.Frame, Evento):
         # ? bg usa un color hexadecimal para dar mejor tonalidad y no estar tan blanco y no muy gris :(xD)
         
         # ? Fira Code una fuente personalizada para que se vea mas bonito y no tan feo en caso de no tener ninguna fuente segun su documentacion de tkinter toma la defult del sistema
-
 
         for i, dia in enumerate(dias_semana):
             etiqueta = tk.Label(self.root, text=dia, font=("Fira Code", 12), width=10, height=2, bg="#fff", bd=1, relief="solid")
@@ -53,9 +52,7 @@ class Calendario(tk.Frame, Evento):
             if columna > 6:
                 fila += 1
                 columna = 0
-
             etiqueta.bind("<Enter>", self.mostrar_dia)
-
             etiqueta.bind("<Button-1>", self.color_importante)
             etiqueta.bind("<Double-Button-1>", self.crear_evento)
 

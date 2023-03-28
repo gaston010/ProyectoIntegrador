@@ -254,5 +254,5 @@ class Evento:
                 else:
                     tags = ()
                 self.arbol.insert("", "end", values=row, tags=tags)
-        self.arbol.tag_configure('True', background='green')
+            self.arbol.tag_configure('True', background='green')
         self.arbol.update() # actualiza el arbol
