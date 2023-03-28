@@ -14,6 +14,14 @@ class Conexion:
             print(f"Conectado a la base de datos", self.conexion.database) # muestra el nombre dela db
         except mysql.Error as e:
             print("No se puede conectar", e)
+            
+    def createtable(self):
+        sql = "CREATE TABLE IF NOT EXISTS eventos (nombre VARCHAR(50) NOT NULL, fecha DATE NOT NULL, hora TIME NOT NULL, descripcion VARCHAR(50), duracion VARCHAR(50) NOT NULL, importancia BOOLEAN NOT NULL, PRIMARY KEY (nombre))"
+        try:
+            self.cursor.execute(sql)
+            print("Tabla creada")
+        except mysql.Error as e:
+            print("Error al crear la tabla:", e)
 
     def buscar(self, nombre):
         sql = f"SELECT * FROM eventos WHERE nombre LIKE '%{nombre}%'"
@@ -87,5 +95,3 @@ class Conexion:
         except Exception  as e:
             print("Error al buscar", e)
             return []
-
-# Conexion().actualizar("Nuevo", "Evento", "1", "Venta")
