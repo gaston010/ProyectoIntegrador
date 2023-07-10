@@ -1,20 +1,31 @@
 import mysql.connector as mysql
 
+
 class Conexion:
 
-    def __init__(self, ):
+    def __init__(self):
         try:
-            self.conexion = mysql.connect( 
-            host = "localhost",
-            user = "root",
-            password = "root",
-            database = "eventosdb"
-        )
+            self.conexion = mysql.connect(
+                host="localhost",
+                user="root",
+                password="root",
+                database="eventosdb"
+            )
             self.cursor = self.conexion.cursor()
-            print(f"Conectado a la base de datos", self.conexion.database) # muestra el nombre dela db
+            # muestra el nombre dela db
+            print("Conectado a la base de datos", self.conexion.database)
         except mysql.Error as e:
             print("No se puede conectar", e)
-            
+
+    @staticmethod
+    def create_database(self):
+        sql = "CREATE DATABASE IF NOT EXISTS eventosdb"
+        try:
+            self.cursor.execute(sql)
+            print("Base de datos creada")
+        except mysql.Error as e:
+            print("Error al crear la base de datos:", e)
+
     def createtable(self):
         sql = "CREATE TABLE IF NOT EXISTS eventos (nombre VARCHAR(50) NOT NULL, fecha DATE NOT NULL, hora TIME NOT NULL, descripcion VARCHAR(50), duracion VARCHAR(50) NOT NULL, importancia BOOLEAN NOT NULL, PRIMARY KEY (nombre))"
         try:
@@ -30,7 +41,7 @@ class Conexion:
             resultado = self.cursor.fetchall()
             resultado = list(resultado)
             return resultado
-        except Exception  as e:
+        except Exception as e:
             print("Error al buscar", e)
             return []
 
@@ -42,26 +53,24 @@ class Conexion:
             print("Datos insertados")
         except Exception as e:
             print("Error al insertar", e)
-    
+
     def eliminar(self, eliminar):
         sql = "DELETE FROM eventos WHERE nombre = %s"
         try:
-            self.cursor.execute(sql, eliminar)
+            self.cursor.execute(sql, (eliminar,))
             self.conexion.commit()
             print("Datos eliminados")
         except Exception as e:
             print("Error al eliminar", e)
 
-
     def actualizar(self, *datos):
         sql = "UPDATE eventos SET nombre = %s, descripcion = %s, duracion = %s WHERE nombre = %s"
         try:
-            self.cursor.execute(sql, datos)
+            self.cursor.execute(sql, (datos))
             self.conexion.commit()
             print("Datos actualizados")
         except Exception as e:
             print("Error al actualizar", e)
-
 
     def buscartodo(self):
         sql = "SELECT * FROM eventos"
@@ -74,24 +83,24 @@ class Conexion:
             print("Error al buscar", e)
             return []
 
-    def buscarhora(self,hora):
+    def buscarhora(self, hora):
         sql = f"SELECT * FROM eventos WHERE hora LIKE '%{hora}%'"
         try:
             self.cursor.execute(sql)
             resultado = self.cursor.fetchall()
             resultado = list(resultado)
             return resultado
-        except Exception  as e:
+        except Exception as e:
             print("Error al buscar", e)
             return []
-    
-    def buscarfecha(self,fecha):
+
+    def buscarfecha(self, fecha):
         sql = f"SELECT * FROM eventos WHERE fecha LIKE '%{fecha}%'"
         try:
             self.cursor.execute(sql)
             resultado = self.cursor.fetchall()
             resultado = list(resultado)
             return resultado
-        except Exception  as e:
+        except Exception as e:
             print("Error al buscar", e)
             return []

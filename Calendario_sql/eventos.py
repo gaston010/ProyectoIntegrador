@@ -1,7 +1,9 @@
 import datetime as dt
 import tkinter as tk
-from tkinter import messagebox, ttk, END
+from tkinter import messagebox, ttk
 import src.conexion as con
+from src.insert import data
+
 
 class Evento():
     id_evento = 0
@@ -10,7 +12,8 @@ class Evento():
         self.root = root
         root.title("Formulario de eventos")
         self.root.geometry("600x500")
-        self.conexion= con.Conexion()
+        self.conexion = con.Conexion()
+        con.Conexion.createtable(self.conexion)
 
         # Definir variables de control
         self.titulo_var = tk.StringVar()
@@ -20,11 +23,8 @@ class Evento():
         self.duracion = tk.StringVar()
         self.importancia_var = tk.BooleanVar()
 
-
         self.buscar = tk.StringVar()
-        #self.id_evento = self.identificador() # no usado una forma mejor que no rompe las guindas
-
-
+        # self.id_evento = self.identificador() # no usado una forma mejor que no rompe las guindas # noqa
 
         # obtener la fecha y la hora actual
         fecha_actual = dt.date.today()
@@ -32,45 +32,55 @@ class Evento():
 
         hora_actual = dt.datetime.now().time()
         self.hora_var.set(hora_actual.strftime("%H:%M"))
-        
-        self.duracion.set("1 hora")
 
+        self.duracion.set("1 hora")
 
         # Crear etiquetas y campos de entrada
         tk.Label(root, text="Título:").grid(row=0, column=0)
-        self.titu = tk.Entry(root,textvariable=self.titulo_var)
+        self.titu = tk.Entry(root, textvariable=self.titulo_var)
         self.titu.grid(row=0, column=1)
         self.titu.focus()
-        
+
         tk.Label(root, text="Fecha (YY/MM/DD):",).grid(row=1, column=0)
-        self.fecha=tk.Entry(root, textvariable=self.fecha_var)
+        self.fecha = tk.Entry(root, textvariable=self.fecha_var)
         self.fecha.grid(row=1, column=1)
 
         tk.Label(root, text="Hora (HH:MM):").grid(row=2, column=0)
-        self.hora=tk.Entry(root, textvariable=self.hora_var)
+        self.hora = tk.Entry(root, textvariable=self.hora_var)
         self.hora.grid(row=2, column=1)
 
         tk.Label(root, text="Descripción:").grid(row=3, column=0)
-        self.des=tk.Entry(root, textvariable=self.descripcion_var)
+        self.des = tk.Entry(root, textvariable=self.descripcion_var)
         self.des.grid(row=3, column=1)
 
         tk.Label(root, text="Importancia:").grid(row=5, column=0)
-        self.imp= tk.Checkbutton(root, variable=self.importancia_var)
+        self.imp = tk.Checkbutton(root, variable=self.importancia_var)
         self.imp.grid(row=5, column=1)
 
         tk.Label(root, text="Duracion:").grid(row=4, column=0)
-        self.dur=ttk.Combobox(root, textvariable=self.duracion, values=["1 Hora", "2 Horas", "3 Horas", "4 Horas", "5 Horas", "6 Horas", "7 Horas", "8 Horas", "9 Horas", "10 Horas", "11 Horas", "12 Horas", "13 Horas", "14 Horas", "15 Horas", "16 Horas", "17 Horas", "18 Horas", "19 Horas", "20 Horas", "21 Horas", "22 Horas", "23 Horas", "24 Horas"])
+        self.dur = ttk.Combobox(root, textvariable=self.duracion)
         self.dur.grid(row=4, column=1)
 
         tk.Label(root, text="Buscar Evento:").grid(row=0, column=2)
         tk.Entry(root, textvariable=self.buscar).grid(row=0, column=3)
-        
-        ev=tk.Label(root, text="Eventos:", font="Arial")
+
+        tk.Button(root, text="Random Data",
+                  command=self.generar).grid(row=2, column=3)
+
+        ev = tk.Label(root, text="Eventos:", font="Arial")
         ev.grid(row=8, column=2)
         ev.config(font=("Arial", 20))
 
-        #Genera una lista para mostrar los eventos
-        self.arbol = ttk.Treeview(root, columns=("Titulo", "Fecha", "Hora", "Descripcion", "Duracion", "Importancia"))
+        # Genera una lista para mostrar los eventos
+        self.arbol = ttk.Treeview(root, columns=(
+            "Titulo",
+            "Fecha",
+            "Hora",
+            "Descripcion",
+            "Duracion",
+            "Importancia"
+        ))
+
         self.arbol.grid(row=9, column=0, columnspan=4)
         self.arbol.heading("#0", text=" ")
         self.arbol.heading("Titulo", text="Titulo")
@@ -89,22 +99,24 @@ class Evento():
         if self.conexion:
             self.cargar_eventos()
             self.arbol.update()
-        
-        # Crear botones
-        btnguardar =  tk.Button(root, text="Crear Nuevo Evento", command=self.guardar)
-        btnguardar.grid(row=6, column=0)
-        
-        tk.Button(root, text="Modificar", command=self.modificar).grid(row=7, column=0)
-        tk.Button(root, text="Eliminar evento", command=self.eliminar_evento).grid(row=6, column=2)
-        tk.Button(root, text="Buscar", command=self.buscar_evento).grid(row=1, column=3)
 
-        cerrar = tk.Button(root, text="Cerrar", command=root.destroy) 
+        # Crear botones
+        btnguardar = tk.Button(
+            root, text="Crear Nuevo Evento", command=self.guardar)
+        btnguardar.grid(row=6, column=0)
+
+        tk.Button(root, text="Modificar",
+                  command=self.modificar).grid(row=7, column=0)
+        tk.Button(root, text="Eliminar evento",
+                  command=self.eliminar_evento).grid(row=6, column=2)
+        tk.Button(root, text="Buscar", command=self.buscar_evento).grid(
+            row=1, column=3)
+
+        cerrar = tk.Button(root, text="Cerrar", command=root.destroy)
         cerrar.grid(row=7, column=2)
 
-# FUNCIONAL NO TOCAR
     def eliminar_evento(self):
         # Obtener el título del evento a eliminar
-
         if not self.titulo_var.get():
             messagebox.showwarning("Error", "El título es obligatorio")
             return
@@ -120,7 +132,19 @@ class Evento():
         self.duracion.set("1 Hora")
         self.importancia_var.set(False)
         self.titu.focus()
+        self.arbol.update()
 
+    def generar(self):
+        for _ in data:
+            self.titulo_var.set(_[0])
+            self.fecha_var.set(_[1])
+            self.hora_var.set(_[2])
+            self.descripcion_var.set(_[3])
+            self.duracion.set(_[4])
+        self.arbol.update()
+
+        # use for test [rmv]
+        print(data)
 
     def guardar(self):
         import datetime
@@ -142,7 +166,8 @@ class Evento():
         descripcion = self.descripcion_var.get()
         duracion = self.duracion.get()
         importancia = self.importancia_var.get()
-        self.conexion.insertar(titulo, fecha, hora, descripcion, duracion, importancia)
+        self.conexion.insertar(titulo, fecha, hora,
+                               descripcion, duracion, importancia)
         messagebox.showinfo("Información", "Evento guardado correctamente")
 
         # Limpiar los campos de entrada
@@ -155,21 +180,19 @@ class Evento():
         self.titu.focus()
         self.arbol.update()
 
-
-    #ModificarByCristian
     def modificar(self):
-    # Obtener los valores de los campos de entrada
+        # Obtener los valores de los campos de entrada
         if not self.titulo_var.get():
             messagebox.showwarning("Error", "El título es obligatorio")
             return
         # Actualizar el evento en la base de datos
-        nuevoTi = self.titulo_var.get()
-        if self.conexion.actualizar(nuevoTi, self.descripcion_var.get(), self.duracion.get(), nuevoTi):
-            messagebox.showinfo("Información", "Evento modificado correctamente")
+        titulo_viejo = self.titulo_var.get()
+        if self.conexion.actualizar(titulo_viejo, self.descripcion_var.get(), self.duracion.get(), self.titulo_var.get()):  # noqa
+            messagebox.showinfo(
+                "Información", "Evento modificado correctamente")
         self.arbol.update()
 
-
-# Buscar por ahora funciona 26/03/2023 00:56 Sabado noche /Domingo Madrugrada 
+# Buscar por ahora funciona 26/03/2023 00:56 Sabado noche /Domingo Madrugrada
     def buscar_evento(self):
         # Depurar la consulta SQL
         if not self.buscar.get():
@@ -177,7 +200,7 @@ class Evento():
             return
         buscar = self.conexion.buscar(self.buscar.get())
         if buscar:
-            # Si se encontraron resultados, vaciar los campos antes de rellenarlos
+            # Si se encontraron resultados, vaciar los campos antes de rellenarlos # noqa
             self.titulo_var.set("")
             self.fecha_var.set("")
             self.hora_var.set("")
@@ -186,30 +209,31 @@ class Evento():
             self.importancia_var.set(False)
             # Recorrer los resultados y rellenar los campos
             for i in buscar:
-                # cambia todo los valors a str por que no se puede escribir en el entry no entender por que =¡ 
+                # cambia todo los valors a str por que no se puede escribir en el entry # noqa
+                # no entender por que =¡
                 # TODO: Buscar mas info
                 self.titulo_var.set(str(i[0]))
                 self.fecha_var.set(str(i[1]))
                 self.hora_var.set(str(i[2]))
                 self.descripcion_var.set(str(i[3]))
                 self.duracion.set(str(i[4]))
-                self.importancia_var.set(bool(i[5])) # <-- Cambia los valores a booleano para poder escribirlos en el checkbox
+                # Cambia los valores a booleano para poder escribirlos en el checkbox # noqa
+                self.importancia_var.set(bool(i[5]))
         else:
             messagebox.showwarning("Error", "No se encontraron resultados")
-
+        self.arbol.update()
 
     def comprobar_hora(self):
         fecha_actual = self.fecha_var.get()
         hora_actual = self.hora_var.get()
         hora = self.conexion.buscarhora(hora_actual)
-            
+
         if hora == hora_actual:
             for row in hora:
                 if row[1] == fecha_actual:
                     return True
                 else:
                     return False
-
 
     def cargar_eventos(self):
         if self.conexion.buscartodo():
@@ -220,4 +244,4 @@ class Evento():
                     tags = ()
                 self.arbol.insert("", "end", values=row, tags=tags)
             self.arbol.tag_configure('1', background='green')
-        self.arbol.update() # actualiza el arbol
+        self.arbol.update()  # actualiza el arbol
