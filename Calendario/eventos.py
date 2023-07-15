@@ -73,7 +73,7 @@ class Evento():
                   command=self.buscar_evento).grid(row=0, column=2)
         tk.Entry(root, textvariable=self.buscar).grid(row=0, column=3)
 
-        tk.Button(root, text="Buscar por ID", command=self.buscar_evento).grid(row=1, column=2)  # noqa
+        tk.Button(root, text="Buscar por ID", command=self.buscar_eventoid).grid(row=1, column=2)  # noqa
         tk.Entry(root, textvariable=self.buscarid).grid(row=1, column=3)
 
         tk.Button(root, text="Random Data",
@@ -215,7 +215,7 @@ class Evento():
 
         self.cargar_eventos()
 
-# Buscar por ahora funciona 26/03/2023 00:50
+    # Buscar por ahora funciona 26/03/2023 00:50
     def buscar_eventoid(self):
         if not self.buscarid.get():
             messagebox.showwarning("Error", "El id es obligatorio")
