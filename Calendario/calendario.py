@@ -14,7 +14,7 @@ class Calendario(tk.Frame, Evento):
 
         # obtener el mes y el año actual
         self.año_actual = 2023  # ejemplo
-        self.mes_actual = 3  # ejemplo
+        self.mes_actual = 7  # ejemplo
         self.dia_semana, self.dias_mes = calendar.monthrange(
             self.año_actual, self.mes_actual)
         self.mes()
