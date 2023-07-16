@@ -321,7 +321,7 @@ class Evento():
         if len(self.arbol.get_children()) > 0:
             self.arbol.delete(*self.arbol.get_children())
 
-        self.arbol.tag_configure('1', background='green')
+        self.arbol.tag_configure('1', background='teal')
         for evento in self.conexion.buscartodo():
             if evento[6] == 1:
                 self.arbol.insert("", "end", values=evento, tags=('1',))
