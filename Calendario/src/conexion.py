@@ -10,53 +10,45 @@ class Conexion:
                 host="localhost",
                 user="root",
                 password="root",
+            )
+            self.cursor = self.conexion.cursor()
+            # se invoca al metodo createdb para crear la db y la misma crea la tablas como indica
+            self.createdb()
+            self.conexion = mysql.connect(
+                host="localhost",
+                user="root",
+                password="root",
                 database="eventosdb"
             )
             self.cursor = self.conexion.cursor()
             # muestra el nombre dela db
-        except mysql.connector.Error as error:
+        except mysql.Error as error:
             print("No se puede conectar", error)
 
-    # falta corregir no se como hacer que se cree la base de datos antes de validar la conexion # noqa
+    # creacion de la base de datos llamado al metodo tablas
     def createdb(self):
-        if self.conexion:
-            print("Conexión exitosa")
-            sql = "CREATE DATABASE IF NOT EXISTS eventosdb"
-            try:
-                self.cursor.execute(sql)
-                if self.cursor:
-                    print("Base de datos creada")
-                    self.etiqueta_tabla()
-                    self.evento_tabla()
-                    self.evento_etiqueta_tabla()
-            except mysql.Error as e:
-                print("Error al crear la base de datos:", e)
-
-    # creaciones de la tablas , esto esta mal implementado pero realiza lo pensado # noqa
-    def etiqueta_tabla(self):
-        sql = "CREATE TABLE IF NOT EXISTS Etiquetas(idEtiqueta INT PRIMARY KEY AUTO_INCREMENT,etiqueta VARCHAR(255) NOT NULL);"
         try:
-            self.cursor.execute(sql)
+            self.cursor.execute("CREATE DATABASE IF NOT EXISTS eventosdb")
+            print("Base de datos creada")
+            self.cursor.execute("USE eventosdb")
+            self.tablas()
+        except mysql.Error as e:
+            print("Error al crear la base de datos:", e)
+
+    # creaciones de la tablas
+    def tablas(self):
+        etiqueta = "CREATE TABLE IF NOT EXISTS Etiquetas(idEtiqueta INT PRIMARY KEY AUTO_INCREMENT,etiqueta VARCHAR(255) NOT NULL);"
+
+        evento = "CREATE TABLE IF NOT EXISTS Eventos (idEvento INT PRIMARY KEY AUTO_INCREMENT,titulo VARCHAR(255) NOT NULL,fecha DATE NOT NULL,hora TIME NOT NULL,descripcion VARCHAR(255) NOT NULL, duracion VARCHAR(255) NULL,importancia TINYINT NULL);"
+
+        evento_etiqueta = "CREATE TABLE IF NOT EXISTS Etiqueta_Evento (idEtiqueta INT,idEvento INT,PRIMARY KEY (idEtiqueta, idEvento),FOREIGN KEY (idEtiqueta) REFERENCES Etiquetas(idEtiqueta),FOREIGN KEY (idEvento) REFERENCES Eventos(idEvento));"
+
+        try:
+            self.cursor.execute(etiqueta)
+            self.cursor.execute(evento)
+            self.cursor.execute(evento_etiqueta)
             if self.cursor:
                 print("Tabla Etiquetas creada")
-        except mysql.Error as e:
-            print("Error al crear la tabla:", e)
-
-    def evento_tabla(self):
-        sql = "CREATE TABLE IF NOT EXISTS Eventos (idEvento INT PRIMARY KEY AUTO_INCREMENT,titulo VARCHAR(255) NOT NULL,fecha DATE NOT NULL,hora TIME NOT NULL,descripcion VARCHAR(255) NOT NULL, duracion VARCHAR(255) NULL,importancia TINYINT NULL);"
-        try:
-            self.cursor.execute(sql)
-            if self.cursor:
-                print("Tabla Eventos creada")
-        except mysql.Error as e:
-            print("Error al crear la tabla:", e)
-
-    def evento_etiqueta_tabla(self):
-        sql = "CREATE TABLE IF NOT EXISTS Etiqueta_Evento (idEtiqueta INT,idEvento INT,PRIMARY KEY (idEtiqueta, idEvento),FOREIGN KEY (idEtiqueta) REFERENCES Etiquetas(idEtiqueta),FOREIGN KEY (idEvento) REFERENCES Eventos(idEvento));"
-        try:
-            self.cursor.execute(sql)
-            if self.cursor:
-                print("Tabla Etiqueta_Evento creada")
         except mysql.Error as e:
             print("Error al crear la tabla:", e)
 
@@ -78,6 +70,26 @@ class Conexion:
         except Exception as e:
             print("Error al insertar", e)
 
+    def consulta(self, consulta):
+        # docstring de la funcion
+        """
+        Realiza una consulta a la base de datos.
+        Args:
+        - consulta (str): Consulta a realizar.
+        Returns:
+        - resultados (list): Lista con los resultados de la consulta.
+        """
+        try:
+            self.cursor.execute(consulta)
+            resultados = self.cursor.fetchall()
+            self.cursor.close()
+            return resultados
+        except Exception as e:
+            print("Error al consultar", e)
+        finally:
+            self.cursor.close()
+            self.conexion.close()
+
     def eliminar(self, eliminar):
         """
         Elimina un evento de la base de datos.
@@ -96,17 +108,27 @@ class Conexion:
         except Exception as e:
             print("Error al eliminar", e)
 
-    def actualizar(self, titulo, descripcion, duracion, id):
-        sql = "UPDATE eventos SET titulo = %s , descripcion = %s , duracion = %s WHERE idEvento = %s"
+    def actualizar(self, *datos: str, id: int):
+        """
+        Actualiza los datos de un evento en la base de datos.
+
+        Args:
+        - datos (tuple): Tupla con los datos del evento a actualizar.
+        - id (int): ID del evento a actualizar.
+
+        Returns:
+        - True si se actualizo correctamente.
+        - False si no se pudo actualizar.
+        """
+        sql = "UPDATE eventos SET titulo = %s, fecha = %s, hora = %s, descripcion = %s, duracion = %s WHERE idEvento = %s"
         try:
-            self.cursor.execute(sql, (titulo, descripcion, duracion, id))
+            self.cursor.execute(sql, (*datos, id))
             self.conexion.commit()
             print("Datos actualizados")
+            return True
         except Exception as e:
             print("Error al actualizar", e)
-        finally:
-            self.cursor.close()
-            self.conexion.close()
+            return False
 
     def buscar(self, titulo):
         """

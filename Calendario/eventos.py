@@ -12,10 +12,9 @@ class Evento():
     def __init__(self, root):
         self.root = root
         root.title("Formulario de eventos")
-        self.root.geometry("650x500")
+        self.root.geometry("520x500")
         self.conexion = con.Conexion()
         self.data = DataRandom()
-        con.Conexion.createdb(self.conexion)
 
         # Definir variables de control
         self.idEvento = tk.IntVar()
@@ -69,7 +68,7 @@ class Evento():
         self.dur = ttk.Combobox(root, textvariable=self.duracion)
         self.dur.grid(row=5, column=1)
 
-        tk.Button(root, text="Buscar Evento por Nombre:",
+        tk.Button(root, text="Buscar por Nombre:",
                   command=self.buscar_evento).grid(row=0, column=2)
         tk.Entry(root, textvariable=self.buscar).grid(row=0, column=3)
 
@@ -91,10 +90,10 @@ class Evento():
             "Hora",
             "Descripcion",
             "Duracion",
-            "Importancia"
+            # "Importancia"
         ))
 
-        self.arbol.grid(row=9, column=0, columnspan=4)
+        self.arbol.grid(row=15, column=0, columnspan=9)
         self.arbol.heading("#0", text=" ")
         self.arbol.heading("ID", text="ID")
         self.arbol.heading("Titulo", text="Titulo")
@@ -102,7 +101,7 @@ class Evento():
         self.arbol.heading("Hora", text="Hora")
         self.arbol.heading("Descripcion", text="Descripcion")
         self.arbol.heading("Duracion", text="Duracion")
-        self.arbol.heading("Importancia", text="Importancia")
+        # self.arbol.heading("Importancia", text="Importancia")
         self.arbol.column("#0", width=0)
         self.arbol.column("ID", width=10)
         self.arbol.column("Titulo", width=100)
@@ -110,7 +109,7 @@ class Evento():
         self.arbol.column("Hora", width=100)
         self.arbol.column("Descripcion", width=100)
         self.arbol.column("Duracion", width=100)
-        self.arbol.column("Importancia", width=100)
+        # self.arbol.column("Importancia", width=100)
         if self.conexion:
             self.conexion.buscartodo()
             self.cargar_eventos()
@@ -118,14 +117,12 @@ class Evento():
         # Crear botones
         btnguardar = tk.Button(
             root, text="Crear Nuevo Evento", command=self.guardar)
-        btnguardar.grid(row=6, column=0)
+        btnguardar.grid(row=7, column=0)
 
         tk.Button(root, text="Modificar",
-                  command=self.modificar).grid(row=7, column=0)
+                  command=self.modificar).grid(row=8, column=0)
         tk.Button(root, text="Eliminar evento",
                   command=self.eliminar_evento).grid(row=6, column=2)
-        # tk.Button(root, text="Buscar", command=self.buscar_evento).grid(
-        #     row=1, column=3)
 
         cerrar = tk.Button(root, text="Cerrar", command=root.destroy)
         cerrar.grid(row=7, column=2)
@@ -150,6 +147,9 @@ class Evento():
         self.cargar_eventos()
 
     def generar(self):
+        """
+        Genera ratos ramdona partir de la clase data
+        """
         print("Generando datos aleatorios desde la clase data ...")
         self.data.generate_data()
         item = self.data.data
@@ -157,17 +157,22 @@ class Evento():
         for data in item:
             self.conexion.insertar(data[0], data[1], data[2],
                                    data[3], data[4], rd.choice([True, False]))
-        # use for test [rmv]
-        # print(rd)
         self.cargar_eventos()
 
     def guardar(self):
         """
-        Saves an event to the database.
+        Guardar un evento en la base de datos
 
-        Verifies if the title is empty and if it already exists in the database.
-        Inserts the event into the database and displays a success message.
-        Clears the input fields and focuses on the title field.
+        Comprueba que el campo título no esté vacío y que no exista
+        un evento con el mismo título en la base de datos. Si el título
+        no existe, se inserta el evento en la base de datos y se muestra
+        un mensaje de confirmación. Si el título ya existe, se muestra
+        un mensaje de error.
+
+        una vez terminado todo el proceso el mismo limpia los cambios
+        genera deja los entry limpio, fecha y hora actual, y el focus
+        en el titulo
+
         """
         import datetime
 
@@ -203,15 +208,34 @@ class Evento():
         self.cargar_eventos()
 
     def modificar(self):
+        """
+
+        Cambia los valores de Titulo, Fecha, Hora,descripcion,
+        duracion una vez que comprueba que los mismo no esten
+        vacios y que el titulo exista en la base de datos
+
+        """
         # Obtener los valores de los campos de entrada
         if not self.titulo_var.get():
             messagebox.showwarning("Error", "El título es obligatorio")
             return
         # Actualizar el evento en la base de datos
         if self.conexion.actualizar(self.titulo_var.get(
-        ), self.descripcion_var.get(), self.duracion.get(), self.idEvento.get()):
+        ), self.fecha_var.get(), self.hora_var.get(), self.descripcion_var.get(), self.duracion.get(), id=self.idEvento.get()):
             messagebox.showinfo(
                 "Información", "Evento actualizado correctamente")
+
+        # Limpiar los campos de entrada para una nueva busqueda
+        fecha_actual = dt.date.today()
+        hora_actual = dt.datetime.now().time()
+        self.buscar.set("")
+        self.titulo_var.set("")
+        self.fecha_var.set(fecha_actual.strftime("%Y/%m/%d"))
+        self.hora_var.set(hora_actual.strftime("%H:%M"))
+        self.descripcion_var.set("")
+        self.duracion.set("1 Hora")
+        self.importancia_var.set(False)
+        self.titu.focus()
 
         self.cargar_eventos()
 
@@ -289,32 +313,18 @@ class Evento():
                 else:
                     return False
 
-    def cambiar_color_fondo(self, item, color):
-        """
-        Cambia el color de fondo del elemento especificado.
-
-        Args:
-            item (str): El identificador del elemento.
-            color (str): El color de fondo.
-        """
-        self.arbol.tag_configure(item, background=color)
-
 # Cargar eventos en el Treeview
-# contiene algo que no genera el color sobre importancia es = 1 para darle un color # noqa
-    def cargar_eventos(self):
-        """
-        Carga los eventos en el Treeview.
+# Colca verde los eventos con importancia
 
-        Si hay eventos en el Treeview, los elimina antes de cargar los nuevos.
-        Si el evento tiene importancia, se le asigna un color de fondo verde.
-        """
+    def cargar_eventos(self):
+
         if len(self.arbol.get_children()) > 0:
             self.arbol.delete(*self.arbol.get_children())
-        for _ in self.conexion.buscartodo():
-            if _[6] in self.conexion.buscartodo():
-                tags = ('1',)
+
+        self.arbol.tag_configure('1', background='green')
+        for evento in self.conexion.buscartodo():
+            if evento[6] == 1:
+                self.arbol.insert("", "end", values=evento, tags=('1',))
             else:
-                tags = ()
-            self.arbol.tag_configure('1', background='blue')
-            self.arbol.insert("", "end", values=_, tags=tags)
-            self.arbol.update()
+                self.arbol.insert("", "end", values=evento)
+        self.arbol.update()
